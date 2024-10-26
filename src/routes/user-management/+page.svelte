@@ -62,11 +62,14 @@ function returnMenu() {
   <div class="form-buttons">
     <button type="submit" class="save-btn">GUARDAR CAMBIOS</button>
   </div>
-
-  <div class="form-buttons">
-    <button type="submit" on:click={returnMenu}  class="exit-btn">REGRESAR A MENÚ PRINCIPAL</button>
-  </div>
   <form>
+
+  <form class="boton-salir">
+  <div class="form-buttons">
+  <button on:click={returnMenu}  class="exit-btn">REGRESAR A MENÚ PRINCIPAL</button>
+  </div>
+</form>
+ 
 </div>
 
 

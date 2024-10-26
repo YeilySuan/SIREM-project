@@ -88,16 +88,15 @@ function cerrarDialogo(){
     <div class="form-group full-width">
     <button on:click={abrirDialogo} class="delete-btn">ELIMINAR MEDICAMENTO</button>
     </div>
-    
+
+  </form>
+
+  <form>
     <div class="form-group full-width">
     <button on:click={returnMenu} class="exit-btn">REGRESAR A MENU PRINCIPAL</button>
     </div>
-
-    </form>
-
-
-
-
+  </form>
+  
 </div>
 
 <style>
@@ -191,10 +190,6 @@ dialog::backdrop {
 }
 
 
-
-
-
-
  /*css del titulo eliminar medicamento*/
   h1{
     grid-column: span 2;
@@ -234,6 +229,8 @@ input{
 
 /*Css del boton de regresar a menu principal*/
 .exit-btn{
+  display: flex;
+  justify-content: center;
   background-color: #2c82a4;
   color: white;
   font-weight: bold;
@@ -243,7 +240,7 @@ input{
   cursor: pointer;
   display: block;
   margin: 0 auto;
-  margin-top: 10px;
+  margin-top: -400px;
   }
 
  .exit-btn:hover{

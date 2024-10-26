@@ -1,6 +1,5 @@
 <script>
 import { onMount } from "svelte";
-import { navigate } from "svelte-routing";
 import { sendMedicineForm } from '../../lib/create-medicamentosHandler';
 
 let barCode = '';
@@ -24,10 +23,8 @@ const handleSendMedicineForm = async () => {
     }
 };
 
-
 function returnMenu() {
-  console.log("regresando al menu principal");
-  navigate('/main-page')
+  window.location.href = "/main-page";
 };
 
 onMount( () => {
@@ -46,7 +43,7 @@ onMount( () => {
     
     <div class="form-group">
       <label for="code">Código de Barras</label>
-      <input type="text" placeholder="Ingresa el Código de Barras" bind:value={barCode} required >
+      <input type="text" placeholder="Ingresa el Código de Barras" bind:value={barCode} required>
     </div>
 
     <div class="form-group">
@@ -56,7 +53,7 @@ onMount( () => {
 
     <div class="form-group">
      <label for="dose">Dosis</label>
-     <input type="text" placeholder="mg, mcg, ml, mg/ml" bind:value={dose}>
+     <input type="text" placeholder="mg, mcg, ml, mg/ml" bind:value={dose} required>
     </div>
 
     <div class="form-group">
@@ -100,12 +97,13 @@ onMount( () => {
     <div class="form-group full-width">
       <button type="submit" class="save-btn">GUARDAR CAMBIOS</button>
     </div>
-
-    <div class="form-group full-width">
-      <button on:click={returnMenu}  class="exit-btn">REGRESAR A MENÚ PRINCIPAL</button>
-    </div>
-
-  </form>  
+  </form>
+ 
+ <form class="form-btn-back">
+  <div class="form-group full-width btn-back">
+    <button type="button" on:click={returnMenu}  class="exit-btn">REGRESAR A MENÚ PRINCIPAL</button>
+  </div>
+</form>
 
 </div>
 
@@ -130,39 +128,38 @@ onMount( () => {
 
 
 /*css de la caja del formulario*/
-  .add-products {
-    display: flex;   
-    justify-content: center;
-    align-items: center;
-    height: 90vh;
-  }
+.add-products {
+  display: flex;   
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
+}
   /*css del formulario*/
-  .main-form {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    grid-template-rows: 4fr;
-    background-color: #a3c4cf;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
- 
-  }
+.main-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  grid-template-rows: 4fr;
+  background-color: #a3c4cf;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 
-  .form-group {
-    display: flex;
-    flex-direction: column;
-  }
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
 
   /*Ingresar nuevo medicamento titulo*/
 h1{
-   grid-column: span 2;
-    text-align: center;
-    background-color: #2c82a4a6; 
-    color: white;
-    padding: 10px;
-    border-radius: 30px;
-    font-size: 2.6rem;
+  grid-column: span 2;
+  text-align: center;
+  background-color: #2c82a4a6; 
+  color: white;
+  padding: 10px;
+  border-radius: 30px;
+  font-size: 2.6rem;
 }
 
 /*css de los campos de entrada de información*/
@@ -193,7 +190,8 @@ input{
   }
 
   /*Css del boton de regresar a menu principal*/
-  .exit-btn{
+.exit-btn{
+  display: flex;
   background-color: #2c82a4;
   color: white;
   font-weight: bold;
@@ -201,20 +199,24 @@ input{
   padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
-  display: block;
-  margin: 0 auto;
-  margin-top: 10px;
-  }
+}
 
- .exit-btn:hover{
+.form-btn-back {
+  position: absolute;
+  bottom: 20%;
+}
+
+
+.exit-btn:hover{
   background-color: rgb(21, 73, 133);
- }
+}
 
 /*ubicación de los botones*/
- .full-width {
-    grid-column: span 2;
-    text-align: center;
-  }
+.full-width {
+  grid-column: span 2;
+  text-align: center;
+}
+
 
 .form-control{
   padding: 9px;

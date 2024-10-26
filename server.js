@@ -25,8 +25,8 @@ db.connect(err => {
 
 (async function () {
     let adminIdCard = "admin";
-    let adminFullName = "Yeily Ortiz Angarita";
-    let adminEmail = "yeilyortiz25@gmail.com";
+    let adminFullName = "Yeily Ortiz";
+    let adminEmail = "yeily@gmail.com";
     let adminPassword = "SiremYeily";
     let adminRole = "Administrativo";
 

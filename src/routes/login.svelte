@@ -60,6 +60,7 @@
   }
 
   :global(body){
+    max-height: 100vh;
     background-color: #c9d6ff;
     background: linear-gradient(to right, #e2e2e2, #c9d6ff);
     display: flex;

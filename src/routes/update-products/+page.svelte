@@ -63,11 +63,15 @@ function returnMenu() {
 <button class="update-btn">ACTUALIZAR MEDICAMENTO</button>
 </div>
 
+</form>
+
+<form>
 <div class="form-group full-width">
 <button on:click={returnMenu} class="exit-btn">REGRESAR A MENU PRINCIPAL</button>
 </div>
-
 </form>
+
+
 </div>
 
 
@@ -156,6 +160,8 @@ input{
 
 /*Css del boton de regresar a menu principal*/
 .exit-btn{
+  display: flex;
+  justify-content: center;
   background-color: #2c82a4;
   color: white;
   font-weight: bold;
@@ -165,8 +171,8 @@ input{
   cursor: pointer;
   display: block;
   margin: 0 auto;
-  margin-top: 10px;
-  }
+  margin-top: -400px;
+}
 
  .exit-btn:hover{
   background-color: rgb(21, 73, 133);
