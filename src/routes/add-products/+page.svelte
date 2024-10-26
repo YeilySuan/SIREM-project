@@ -1,11 +1,34 @@
 <script>
-  import { onMount } from "svelte";
+import { onMount } from "svelte";
 import { navigate } from "svelte-routing";
+import { sendMedicineForm } from '../../lib/create-medicamentosHandler';
+
+let barCode = '';
+let name = '';
+let dose = '';
+let presentation = '';
+let numberLot = '';
+let amount = '';
+let laboratory = '';
+let dateExpiration= '';
+let idUsuarioMed = 16;
+
+
+const handleSendMedicineForm = async () => {
+    try {
+      const result = await sendMedicineForm(barCode, name, dose, presentation, numberLot, amount, laboratory, dateExpiration, idUsuarioMed);
+      console.log('respuesta del server:', `Medicamento registrado con el Id: ${result.id}`);
+
+    } catch (error) {
+      console.log('error en handleSendMedicineForm', error);
+    }
+};
+
 
 function returnMenu() {
   console.log("regresando al menu principal");
   navigate('/main-page')
-}
+};
 
 onMount( () => {
   console.log("add-products ha sido montado")
@@ -18,66 +41,64 @@ onMount( () => {
 <div class="background"></div>
 
 <div class="add-products">
-  <form class="main-form">
-    <h1>INGRESAR MEDICAMENTO NUEVO</h1>
-
-    
+  <form on:submit|preventDefault={handleSendMedicineForm} class="main-form">
+    <h1>INGRESAR MEDICAMENTO NUEVO</h1>    
     
     <div class="form-group">
       <label for="code">Código de Barras</label>
-      <input type="text" placeholder="Ingresa el Código de Barras" >
+      <input type="text" placeholder="Ingresa el Código de Barras" bind:value={barCode} required >
     </div>
 
     <div class="form-group">
       <label for="name">Nombre</label>
-      <input type="text" placeholder="Nombre del medicamento">
+      <input type="text" placeholder="Nombre del medicamento" bind:value={name} required>
     </div>
 
     <div class="form-group">
      <label for="dose">Dosis</label>
-      <input type="text" placeholder="mg, mcg, ml, mg/ml">
+     <input type="text" placeholder="mg, mcg, ml, mg/ml" bind:value={dose}>
     </div>
 
     <div class="form-group">
       <label for="presentation">Presentación</label>
-      <select id="presentation" class="form-control">
+      <select id="presentation" class="form-control" bind:value={presentation} required>
       <option value="" disabled selected>Seleccione una presentación Farmacéutica</option>
       <option value="tableta">Tableta</option>
       <option value="gragea">Gragea</option>
-      <option value="cápsula">Cápsula</option>
+      <option value="cápsula">Capsula</option>
       <option value="comprimidos">Comprimido</option>
       <option value="jarabe">Jarabe</option>
-      <option value="solución">Solución</option>
+      <option value="solución">Solucion</option>
       <option value="jalea">Jalea</option>
       <option value="crema">Crema</option>
-      <option value="solucion inyectbale">Solución inyectable</option>
+      <option value="solucion inyectbale">Solucion inyectable</option>
       <option value="polvo">Polvo para reconstituir</option>
     </select>
     </div>
 
     <div class="form-group">
       <label for="lot">Lote</label>
-      <input type="text" placeholder="Lote">
+      <input type="text" placeholder="Lote" bind:value={numberLot} required>
     </div>
 
     <div class="form-group">
       <label for="expiration date">Fecha de Vencimiento</label>
-      <input type="date">
+      <input type="date" bind:value={dateExpiration} required>
     </div>
 
     <div class="form-group">
       <label for="amount">Cantidad</label>
-      <input type="number" placeholder="Cantidad ingresada">
+      <input type="number" placeholder="Cantidad ingresada" bind:value={amount} required>
     </div>
 
     <div class="form-group">
       <label for="laboratory">Laboratorio</label>
-      <input type="text" placeholder="Fabricante">
+      <input type="text" placeholder="Fabricante" bind:value={laboratory} required>
     </div>
 
 
     <div class="form-group full-width">
-      <button class="save-btn">GUARDAR CAMBIOS</button>
+      <button type="submit" class="save-btn">GUARDAR CAMBIOS</button>
     </div>
 
     <div class="form-group full-width">

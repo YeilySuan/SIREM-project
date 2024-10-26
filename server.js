@@ -96,6 +96,68 @@ app.post('/api/submit', (req, res) => {
 
 });
 
+//crear medicamento yeily
+
+app.post('/api/createMedicamentos', (req, res) => {
+    const{ barCode, name, dose, presentation, numberLot, amount, laboratory, dateExpiration, idUsuarioMed } = req.body;
+
+    const medicamentoQuery = 'INSERT INTO medicamentos (Codigo_barras, Nombre, Dosis, Presentacion, Id_usuarios) VALUES (?,?,?,?,?)';
+
+
+    db.query(medicamentoQuery, [barCode, name, dose, presentation, idUsuarioMed], (err, result) =>{
+        if(err){
+            return res.status(500).send(err);
+        }
+        const medicamentoId = result.insertId;
+
+        const loteQuery = 'INSERT INTO lotes (Numero_lote, Cantidad, Laboratorio, Fecha_vencimiento, Id_Medicamento) VALUES(?,?,?,?,?)' ;
+
+        db.query(loteQuery, [numberLot, amount, laboratory,dateExpiration, medicamentoId], (err) => {
+            if(err){
+                return res.status(500).send(err);
+            }
+            res.status(200).json({message: 'Medicamento y Lote registrados exitosamente', id: medicamentoId });
+        });
+    });
+});
+
+
+
+
+//final de crear medicamento yeily
+
+app.post('/validateAdmin', (req, res) => {
+    const {username, password } = req.body;
+
+    const validateAdminQuery = `SELECT u.*, r.Tipo_rol
+                                FROM roles r
+                                JOIN usuarios u ON r.Id_usuarios = u.Id_usuarios
+                                WHERE u.Cedula = ? `;
+
+
+    db.query(validateAdminQuery, [username], (err, result) => {
+        if (err) return res.status(500).send('Error en la base de datos');
+        if (result.length === 0) return res.status(401).send('Usuario no encontrado');
+
+        const user = result[0];
+        
+        if (user.Contraseña === password) {
+            if (user.Tipo_rol === 'Administrativo') {
+
+                
+
+                return res.status(200).json({ message: 'Acceso concedido' });
+            } else {
+                return res.status(403).json({ message: 'Acceso denegado' });
+            }
+        } else {
+            return res.status(401).json({ message: 'Contraseña incorrecta' });
+        }
+
+
+    })
+})
+
 app.listen(PORT, () => {
     console.log(`Server corriendo en el puerto ${PORT}`);
 });

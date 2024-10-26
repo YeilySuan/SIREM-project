@@ -1,9 +1,30 @@
 <script>
   import { onDestroy } from "svelte";
   import { modalStore } from "../stores/modal-store";
-  
+  import { sendValidateAdmin } from "../lib/validateAdminHandle"
+  import { createEventDispatcher } from 'svelte';
+
+
   export let showModal = false;
+
+  const dispatch = createEventDispatcher();
+
+  let username = '';
+  let password = '';
   
+
+const handleValidateAuthentication = async () => {
+  try {
+    const result = await sendValidateAdmin(username, password);
+    console.log('respuesta del server: datos correctos', result);    
+    dispatch('registrationSuccess');
+  } catch (error) {
+    console.log('error en handleValidateAuthentication', error);
+  }
+};
+
+
+
   const unsubscribe = modalStore.subscribe(value => { 
       showModal = value;
   });
@@ -60,9 +81,12 @@
             <br>
             <button on:click={handleCloseModal} class="close-modal">X</button>
             <p>Iniciar sesión administrador</p>
-            <input type="text" placeholder="Usuario">
-            <input type="password" placeholder="Contraseña">
-            <button>Iniciar sesión</button>
+            <form on:submit|preventDefault={handleValidateAuthentication}>
+              <input type="text" placeholder="Usuario" bind:value={username}>
+              <input type="password" placeholder="Contraseña" bind:value={password}>
+              <button type="submit">Iniciar sesión</button>
+            </form>
+            
         </div>
     </div>
   </div>

@@ -4,6 +4,7 @@
   import AuthenticationModal from "./authentication-modal.svelte";
   import { modalStore } from "../stores/modal-store";
   import { sendForm } from '../lib/formHandler';
+  import { createEventDispatcher } from 'svelte';
 
 
   let userIdCard = '';
@@ -288,6 +289,11 @@
 </svelte:head>
 
 <AuthenticationModal />
+
+{#if isActive}
+  <AuthenticationModal on:registrationSuccess={handleSubmit} />
+{/if}
+
 <div class="upper-strip"></div>
 <div class:active={isActive} class:container={containerClass} id="container">
   <div class="form-container sign-up">
@@ -304,7 +310,7 @@
             <option value="administrativo">Administrativo</option>
             <option value="operativo">Operativo</option>
         </select>
-        <button name="init_sesion" type="submit" >Registrar Usuario</button>
+        <button on:click={openModal} name="init_sesion" type="submit" >Registrar Usuario</button>
       </form>
   </div>
   <div class="form-container sign-in">
