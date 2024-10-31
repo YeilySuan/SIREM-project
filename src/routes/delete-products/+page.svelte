@@ -1,11 +1,7 @@
-<script>
-
-import { navigate } from "svelte-routing";
-
+<script> 
 function returnMenu() {
-  console.log("regresando al menu principal");
-  navigate('/main-page')
-}
+  window.location.href = "/main-page";
+};
 
 let dialog;
 
@@ -91,9 +87,9 @@ function cerrarDialogo(){
 
   </form>
 
-  <form>
-    <div class="form-group full-width">
-    <button on:click={returnMenu} class="exit-btn">REGRESAR A MENU PRINCIPAL</button>
+  <form class="form-btn-back">
+    <div class="form-group full-width btn-back">
+      <button type="button" on:click={returnMenu}  class="exit-btn">REGRESAR A MENÚ PRINCIPAL</button>
     </div>
   </form>
   
@@ -230,7 +226,6 @@ input{
 /*Css del boton de regresar a menu principal*/
 .exit-btn{
   display: flex;
-  justify-content: center;
   background-color: #2c82a4;
   color: white;
   font-weight: bold;
@@ -238,18 +233,17 @@ input{
   padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
-  display: block;
-  margin: 0 auto;
-  margin-top: -400px;
-  }
+}
 
- .exit-btn:hover{
+.form-btn-back {
+  position: absolute;
+  bottom: 15%;
+}
+
+
+.exit-btn:hover{
   background-color: rgb(21, 73, 133);
- }
- .full-width {
-    grid-column: span 2;
-    text-align: center;
-  }
+}
 
 /*css del boton de buscar*/
 .buscar-btn {

@@ -1,5 +1,11 @@
 <script>  
   import { goto } from "$app/navigation";
+  import { getMedicineForBtnMainPage } from "../../lib/HandleSearchMedicineBtnMainPage";
+
+  let barCode = "";
+  let result = null;
+  let error = null
+
 
   const goToUserManagement = () => {
     goto('user-management')
@@ -21,54 +27,21 @@ const goToInventoryReport = () => {
     goto('inventory-report')
 };
 
-  function handleBarcode() {
+const getMedicineFunc = async () => {
+    try {
+      const result = await getMedicineForBtnMainPage(barCode);
+      if (result && result.id) {
+        console.log('respuesta del server:', `Usuario registrado con el Id: ${result.id}`);
+        data = result;
+        
+      }
+      
 
-  const codigoBarras = document.getElementById('codigo-barras').value;
-
-  const medicamentos = {
-  "77140785981": {
-    nombre: "Dolex",
-    presentacion: "Tabletas recubiertas",
-    Lote: "EDF147852",
-    fecha: "10/10/2026",
-    cantidad: 30,
-    laboratorio: "GlaxoSmithKline"
-  }
-
-  };
-
-  if(medicamentos[codigoBarras]) {
-
-  const med = medicamentos[codigoBarras];
-
-  document.getElementById('resultado-nombre').textContent = med.nombre;
-  document.getElementById('resultado-presentacion').textContent = med.presentacion;
-  document.getElementById('resultado-lote').textContent = med.Lote;
-  document.getElementById('resultado-fecha').textContent = med.fecha;
-  document.getElementById('resultado-cantidad').textContent = med.cantidad;
-  document.getElementById('resultado-laboratorio').textContent = med.laboratorio;
-
-  document.getElementById('resultado-busqueda').style.display = 'table';
-  }else{
-  alert('Medicamento no encontrado');
-  document.getElementById('resultado-busqueda').style.display = 'none';
-  }
-  }  
-
-  //Codigo para la funcion del boton limpiar campos
-    function limpiarCampos() {
-        const codigoBarrasInput = document.getElementById('codigo-barras');
-        codigoBarrasInput.value = '';
-
-        document.getElementById('resultado-busqueda').style.display = 'none'; 
-        document.getElementById('resultado-nombre').innerText = '';
-        document.getElementById('resultado-presentacion').innerText = '';
-        document.getElementById('resultado-lote').innerText = '';
-        document.getElementById('resultado-fecha').innerText = '';
-        document.getElementById('resultado-cantidad').innerText = '';
-        document.getElementById('resultado-laboratorio').innerText = '';
-        console.log("campos limpios");
+    } catch (error) {
+      console.log('error en getMedicineForMainPage', error);
     }
+  }
+
 
 let dialog;
 
@@ -91,17 +64,17 @@ function closeSesion() {
 
 <style>
   * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
   }
 
   /*css del form del dialogo*/
 dialog p{
-    text-align: center;
-    padding: 20px;
-    font-weight: bold;
+  text-align: center;
+  padding: 20px;
+  font-weight: bold;
 }
 
 dialog form{
@@ -366,8 +339,8 @@ dialog::backdrop {
 
       <!-- este codigo es para el boton de busqueda de medicamentos por codigo de barras -->
       <div class="search-bar">
-          <input type="text" placeholder="Consultar medicamento - Código de barras" id="codigo-barras">
-          <button id="buscar-btn" on:click={handleBarcode}>🔍</button>
+          <input bind:value={barCode} type="text" placeholder="Consultar medicamento - Código de barras" id="codigo-barras">
+          <button id="buscar-btn" on:click={getMedicineFunc}>🔍</button>
       </div>
 
       <table class="result-table" id="resultado-busqueda" style="display: none;">

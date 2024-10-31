@@ -142,9 +142,7 @@ app.post('/validateAdmin', (req, res) => {
         const user = result[0];
         
         if (user.Contraseña === password) {
-            if (user.Tipo_rol === 'Administrativo') {
-
-                
+            if (user.Tipo_rol === 'Administrativo') {                
 
                 return res.status(200).json({ message: 'Acceso concedido' });
             } else {
@@ -158,6 +156,29 @@ app.post('/validateAdmin', (req, res) => {
     })
 })
 
+//obtener medicamento por busqueda main page
+app.get('/api/getMedicineSearchButton', (req, res) => {
+    const { barCode } = req.query;
+
+    const querySearchMedicine = `
+    SELECT  m.Nombre, m.Presentacion, l.Numero_lote, l.Fecha_vencimiento, l.Cantidad, l.Laboratorio
+    FROM medicamentos m
+    JOIN lotes l ON m.Id_medicamento = l.Id_medicamento
+    WHERE m.Codigo_barras = ?`;
+
+    db.query(querySearchMedicine, [barCode], (err, result) => {
+        if (err) {
+            console.error("Error en la consulta a base de datos", err)
+            return res.status(500).send("Error al realizar consulta")
+        } 
+        console.log(res.json(result))     
+    });
+});
+
 app.listen(PORT, () => {
     console.log(`Server corriendo en el puerto ${PORT}`);
 });
+
+
+
+
