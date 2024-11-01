@@ -365,7 +365,7 @@ dialog::backdrop {
               </tr>
           </tbody>
       </table>
-      <button on:click={limpiarCampos} id="limpiarBtn" class="clear-btn">Limpiar Campos</button>
+      <button  id="limpiarBtn" class="clear-btn">Limpiar Campos</button>
 
       
       <h2>Próximos a Vencer</h2>

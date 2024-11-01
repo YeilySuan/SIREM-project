@@ -3,12 +3,17 @@ import db from './db-connection.js';
 import 'dotenv/config';
 import cors from 'cors';
 
-const PORT = 3000;
 
+
+
+const PORT = 3000;
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+
+
 
 app.get('/', (req, res) => {
     res.send("Hola pagina principal");    
@@ -175,10 +180,77 @@ app.get('/api/getMedicineSearchButton', (req, res) => {
     });
 });
 
-app.listen(PORT, () => {
-    console.log(`Server corriendo en el puerto ${PORT}`);
+
+
+//recibir los datos en base de datos para el buscar-eliminar //
+
+app.get('/api/medicamentos/:barCode', (req, res) => {
+    const barCode = req.params.barCode;
+
+    const query = 'SELECT * FROM medicamentos WHERE Codigo_barras = ?';
+    
+    db.query(query, [barCode], (err, results) => {
+        if (err) {
+            return res.status(500).send(err);
+        }
+        
+        
+        if (Array.isArray(results) && results.length === 0) {
+            return res.status(404).json({ message: 'Medicamento no encontrado' });
+        }
+
+        
+        res.status(200).json(results[0]);
+    });
 });
 
 
+app.get('/api/getMedicamentos/:barCode', (req, res) => {
+
+    const barCode = req.params.barCode;
 
 
+    const queryMostrarDatosABorrar = `select 
+                                            m.Nombre,
+                                            m.Codigo_barras, 
+                                            m.Presentacion,
+                                            m.Dosis,
+                                            l.Numero_lote,
+                                            l.Cantidad,
+                                            l.Fecha_vencimiento,
+                                            l.Laboratorio
+                                        from medicamentos as m
+                                        inner join lotes as l
+                                        on m.Id_medicamento = l.Id_Medicamento
+                                        where m.Codigo_barras = ?
+                                        limit 1`;
+
+    db.query(queryMostrarDatosABorrar, [barCode], (err, result) => {
+        if (err) {
+            throw Error;
+        }
+        res.json(result);
+    });
+});
+/*
+    const deleteQuery = 'DELETE FROM medicamentos WHERE Id_medicamento = ?';
+
+    db.query(deleteQuery, [barCode], (err, result) => {
+        if (err) {
+            return res.status(500).send(err);
+        }
+
+        // 'result' es un objeto ResultSetHeader
+        // Se puede acceder a affectedRows directamente desde 'result'
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: 'Medicamento no encontrado' });
+        }
+
+        res.status(200).json({ message: 'Medicamento eliminado exitosamente' });
+    });
+});
+*/
+// Escucha en el puerto especificado
+app.listen(PORT, () => {
+    console.log(`Server corriendo en el puerto ${PORT}`);
+});

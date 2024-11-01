@@ -1,10 +1,26 @@
 <script> 
+
+let dialog;
+
+let barCode = '';
+let error = null;
+let data = [];
+
+let fechaVencimiento = "";
+let nombre = "";
+let dosis = "";
+let presentacion = "";
+let numeroLote = "";
+let cantidad = "";
+let laboratorio = "";
+
+
+//funcion para retornar al main page//
 function returnMenu() {
   window.location.href = "/main-page";
 };
 
-let dialog;
-
+//funciones para el modal de eliminar medicamento//
 function abrirDialogo(){
     dialog.showModal();
 }
@@ -13,60 +29,93 @@ function cerrarDialogo(){
     dialog.close();
 }
 
-</script>
+//funcion para leer el medicamento desde database//
+async function getData() {
 
+    if (!barCode) return; 
+
+		let url = `http://localhost:3000/api/getMedicamentos/${barCode}`;
+
+		try {
+			const response = await fetch(url);
+
+			if (!response.ok) {
+				throw new Error("No se pudo obtener el Medicamento");
+			}
+			data = await response.json();
+      console.log(data)
+			error = null; 
+
+      if (data.length > 0) {
+        fechaVencimiento = data[0].Fecha_vencimiento.slice(0, 10);
+        nombre = data[0].Nombre;
+        dosis = data[0].Dosis;
+        presentacion = data[0].Presentacion;
+        numeroLote = data[0].Numero_lote;
+        cantidad = data[0].Cantidad;
+        laboratorio = data[0].Laboratorio
+      }
+		} catch (err) {
+			error = err.message; 
+			data = []; 
+		}
+	}
+
+</script>
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
   <div class="background"></div>
   <div class="delete-products">
-    <form class="main-form">
+    <form  class="main-form">
       <h1>ELIMINAR MEDICAMENTO</h1>
 
       <div class="form-group">
         <label for="codigo-barras">Código de Barras</label>
-        <input type="text" id="codigo-barras">
+        <input  type="text" id="codigo-barras" bind:value={barCode} required/>
     </div>
     
     
-    <button class="buscar-btn">
+    <button on:click={getData} type="submit" class="buscar-btn">
       <i class="fas fa-search"></i> Buscar
     </button>
     
+    
     <div class="form-group">
       <label for="name">Nombre</label>
-      <input type="text">
+        <input disabled readonly type="text" bind:value={ nombre } />
     </div>
     
     <div class="form-group">
       <label for="dose">Dosis</label>
-       <input type="text">
-     </div>
+       <input disabled  readonly type="text"  bind:value={dosis}/>
+      </div>
+
     
      <div class="form-group">
       <label for="presentation">Presentación</label>
-       <input type="text">
+       <input disabled  readonly type="text" bind:value={ presentacion } />
      </div>
     
     
      <div class="form-group">
       <label for="lot">Lote</label>
-      <input type="text">
+      <input disabled  readonly type="text" bind:value={ numeroLote } />
     </div>
     
     <div class="form-group">
       <label for="expiration date">Fecha de Vencimiento</label>
-      <input type="date">
+        <input disabled  readonly type="text" bind:value={ fechaVencimiento }/>
     </div>
     
     <div class="form-group">
       <label for="amount">Cantidad</label>
-      <input type="text">
+      <input disabled  readonly type="text" bind:value={ cantidad } />
     </div>
     
     <div class="form-group">
       <label for="laboratory">Laboratorio</label>
-      <input type="text">
+      <input disabled  readonly type="text" bind:value={ laboratorio }/>
     </div>
     
   <!---- este es el boton de cerrar sesion y el modal para confirmar cerrar sesión -->
@@ -75,7 +124,7 @@ function cerrarDialogo(){
      <form class="dialog" method="dialog">
       <p>¿Está seguro de querer eliminar este registro de forma permanente?</p>
       <button type="submit" id="button-cancelar" on:click={cerrarDialogo}>CANCELAR</button>
-      <button type="submit" id="button-eliminar" on:click={cerrarDialogo}>ELIMINAR</button>  <!----esto debe modificarse para eliminar de database    -->
+      <button type="submit" id="button-eliminar" on:click={() => {cerrarDialogo();}}>ELIMINAR</button>  <!----esto debe modificarse para eliminar de database    -->
     </form>
   </dialog>
   </div>
@@ -84,7 +133,6 @@ function cerrarDialogo(){
     <div class="form-group full-width">
     <button on:click={abrirDialogo} class="delete-btn">ELIMINAR MEDICAMENTO</button>
     </div>
-
   </form>
 
   <form class="form-btn-back">
@@ -94,6 +142,10 @@ function cerrarDialogo(){
   </form>
   
 </div>
+
+
+
+
 
 <style>
 /*css del fondo (imagen de pastillas) */
@@ -203,6 +255,7 @@ input{
   border: 1px solid #ccc;
   border-radius: 5px;
   margin-top: 5px;
+  font-weight: bold;
 }
 
 /*css del boton de eliminar*/
