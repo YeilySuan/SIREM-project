@@ -1,11 +1,44 @@
 <script>  
   import { goto } from "$app/navigation";
-  import { getMedicineForBtnMainPage } from "../../lib/HandleSearchMedicineBtnMainPage";
+  import { onMount } from "svelte";
 
+  
+  let data = [];
   let barCode = "";
-  let result = null;
   let error = null
 
+ // Función para leer el medicamento desde la base de datos
+  async function getData() {
+    if (!barCode) return;
+
+    let url = `http://localhost:3000/api/getMedicamentos/${barCode}`;
+
+    try {
+      const response = await fetch(url);
+
+      if (!response.ok) {
+        throw new Error("No se pudo obtener el Medicamento");
+      }
+
+      data = await response.json();
+      error = null;
+
+      if (data.length === 0) {
+        alert("El medicamento con el código de barras ingresado no existe o ha sido eliminado.");
+      }
+
+    } catch (err) {
+      error = err.message;
+      data = [];
+      alert("Error al buscar el medicamento. Por favor, intenta nuevamente.");
+    }
+  }
+
+  function clearFields() {
+    barCode = "";
+    data = [];
+    error = null;
+  }
 
   const goToUserManagement = () => {
     goto('user-management')
@@ -27,20 +60,6 @@ const goToInventoryReport = () => {
     goto('inventory-report')
 };
 
-const getMedicineFunc = async () => {
-    try {
-      const result = await getMedicineForBtnMainPage(barCode);
-      if (result && result.id) {
-        console.log('respuesta del server:', `Usuario registrado con el Id: ${result.id}`);
-        data = result;
-        
-      }
-      
-
-    } catch (error) {
-      console.log('error en getMedicineForMainPage', error);
-    }
-  }
 
 
 let dialog;
@@ -59,8 +78,150 @@ function closeSesion() {
   }
 
 
-
 </script>        
+
+
+
+<div class="container">    
+  <header>
+      <div class="header-left" >
+          <img src="/src/lib/images/LogoSIREM.png" alt="SIREM Logo" class="logo">
+          <h1>Sistema de Información Registro y Notificación de Vencimiento de Medicamentos</h1>
+      </div>
+      <div class="header-right">
+          <p>Yeily Ortiz Angarita</p>
+          <button on:click={abrirDialogo} preventDefault class="logout">Cerrar Sesión</button>
+      </div>
+  </header>
+
+  <!---- este es el boton de cerrar sesion y el modal para confirmar cerrar sesión -->
+<div class="show-modal">
+  <dialog bind:this={dialog}>
+   <form class="dialog" method="dialog">
+    <p>¿Está seguro de cerrar la sesión?</p>
+    <button type="submit" id="button-cancelar" on:click={cerrarDialogo}>CANCELAR</button>
+    <button type="submit" id="button-salir" on:click={closeSesion}>CERRAR SESION</button>
+  </form>
+</dialog>
+</div>
+
+  <main>
+      
+      <div class="actions">
+          <button on:click={goToUserManagement}>Gestión de Usuarios</button>
+          <button on:click={goToAddProducts}>Ingresar Medicamento</button>
+          <button on:click={goToUpdateProducts}>Actualizar Medicamento</button>
+          <button on:click={goToDeleteProducts}>Eliminar Medicamento</button>
+          <button on:click={goToInventoryReport}>Reporte de Inventario</button>
+      </div>
+
+
+      <!-- este codigo es para el boton de busqueda de medicamentos por codigo de barras -->
+      <div class="search-bar">
+          <input placeholder="Consultar medicamento - Código de barras" id="codigo-barras" bind:value={barCode}>
+          <button type="submit" id="buscar-btn" on:click={getData}>🔍</button>
+      </div>
+
+            {#if data.length > 0}
+        <table>
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Dosis</th>
+              <th>Presentación</th>
+              <th>Número de Lote</th>
+              <th>Fecha de Vencimiento</th>
+              <th>Cantidad</th>
+              <th>Laboratorio</th>
+            </tr>
+          </thead>
+          <tbody>
+            {#each data as medicamento}
+              <tr>
+                <td>{medicamento.Nombre}</td>
+                <td>{medicamento.Dosis}</td>
+                <td>{medicamento.Presentacion}</td>
+                <td>{medicamento.Numero_lote}</td>
+                <td>{medicamento.Fecha_vencimiento.slice(0, 10)}</td>
+                <td>{medicamento.Cantidad}</td>
+                <td>{medicamento.Laboratorio}</td>
+              </tr>
+            {/each}
+          </tbody>
+        </table>
+      {:else if error}
+        <p>{error}</p>
+      {/if}
+     
+      <button  id="limpiarBtn" class="clear-btn" on:click={clearFields}>Limpiar Campos</button>
+
+      
+      <h2>Próximos a Vencer</h2>
+      <table class="expiring">
+          <thead>
+              <tr>
+                  <th>Nombre</th>
+                  <th>Presentación</th>
+                  <th>Lote</th>
+                  <th>Fecha de Vencimiento</th>
+                  <th>Cantidad</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr class="red">
+                  <td>Acetaminofen</td>
+                  <td>Tableta</td>
+                  <td>RC45789</td>
+                  <td>20/09/2024</td>
+                  <td>10</td>
+              </tr>
+              <tr class="red">
+                  <td>Ibuprofeno</td>
+                  <td>Jarabe</td>
+                  <td>4567852</td>
+                  <td>10/10/2024</td>
+                  <td>15</td>
+              </tr>
+              <tr class="red">
+                  <td>Betametasona</td>
+                  <td>Crema</td>
+                  <td>T345</td>
+                  <td>15/10/2024</td>
+                  <td>5</td>
+              </tr>
+              <tr class="yellow">
+                  <td>Lomotil</td>
+                  <td>Tableta</td>
+                  <td>C45632</td>
+                  <td>10/01/2025</td>
+                  <td>40</td>
+              </tr>
+              <tr class="yellow">
+                  <td>Smecta</td>
+                  <td>Polvo</td>
+                  <td>456987</td>
+                  <td>20/02/2025</td>
+                  <td>10</td>
+              </tr>
+              <tr class="green">
+                  <td>Glibenclamida</td>
+                  <td>Tableta</td>
+                  <td>75214L</td>
+                  <td>14/11/2025</td>
+                  <td>8</td>
+              </tr>
+              <tr class="green">
+                  <td>Buscapina</td>
+                  <td>Tableta</td>
+                  <td>R4568</td>
+                  <td>10/12/2026</td>
+                  <td>22</td>
+              </tr>
+          </tbody>
+      </table>
+  </main>
+</div>
+
 
 <style>
   * {
@@ -303,133 +464,3 @@ dialog::backdrop {
   font-weight: bold;
   }
 </style>
-
-<div class="container">    
-  <header>
-      <div class="header-left" >
-          <img src="/src/lib/images/LogoSIREM.png" alt="SIREM Logo" class="logo">
-          <h1>Sistema de Información Registro y Notificación de Vencimiento de Medicamentos</h1>
-      </div>
-      <div class="header-right">
-          <p>Yeily Ortiz Angarita</p>
-          <button on:click={abrirDialogo} preventDefault class="logout">Cerrar Sesión</button>
-      </div>
-  </header>
-
-  <!---- este es el boton de cerrar sesion y el modal para confirmar cerrar sesión -->
-<div class="show-modal">
-  <dialog bind:this={dialog}>
-   <form class="dialog" method="dialog">
-    <p>¿Está seguro de cerrar la sesión?</p>
-    <button type="submit" id="button-cancelar" on:click={cerrarDialogo}>CANCELAR</button>
-    <button type="submit" id="button-salir" on:click={closeSesion}>CERRAR SESION</button>
-  </form>
-</dialog>
-</div>
-
-  <main>
-      
-      <div class="actions">
-          <button on:click={goToUserManagement}>Gestión de Usuarios</button>
-          <button on:click={goToAddProducts}>Ingresar Medicamento</button>
-          <button on:click={goToUpdateProducts}>Actualizar Medicamento</button>
-          <button on:click={goToDeleteProducts}>Eliminar Medicamento</button>
-          <button on:click={goToInventoryReport}>Reporte de Inventario</button>
-      </div>
-
-      <!-- este codigo es para el boton de busqueda de medicamentos por codigo de barras -->
-      <div class="search-bar">
-          <input bind:value={barCode} type="text" placeholder="Consultar medicamento - Código de barras" id="codigo-barras">
-          <button id="buscar-btn" on:click={getMedicineFunc}>🔍</button>
-      </div>
-
-      <table class="result-table" id="resultado-busqueda" style="display: none;">
-          <thead>
-              <tr>
-                  <th>Nombre</th>
-                  <th>Presentación</th>
-                  <th>Lote</th>
-                  <th>Fecha de Vencimiento</th>
-                  <th>Cantidad</th>
-                  <th>Laboratorio</th>
-              </tr>
-          </thead>
-          <tbody>
-              <tr>
-                  <td id="resultado-nombre"></td>
-                  <td id="resultado-presentacion"></td>
-                  <td id="resultado-lote"></td>
-                  <td id="resultado-fecha"></td>
-                  <td id="resultado-cantidad"></td>
-                  <td id="resultado-laboratorio"></td>
-              </tr>
-          </tbody>
-      </table>
-      <button  id="limpiarBtn" class="clear-btn">Limpiar Campos</button>
-
-      
-      <h2>Próximos a Vencer</h2>
-      <table class="expiring">
-          <thead>
-              <tr>
-                  <th>Nombre</th>
-                  <th>Presentación</th>
-                  <th>Lote</th>
-                  <th>Fecha de Vencimiento</th>
-                  <th>Cantidad</th>
-              </tr>
-          </thead>
-          <tbody>
-              <tr class="red">
-                  <td>Acetaminofen</td>
-                  <td>Tableta</td>
-                  <td>RC45789</td>
-                  <td>20/09/2024</td>
-                  <td>10</td>
-              </tr>
-              <tr class="red">
-                  <td>Ibuprofeno</td>
-                  <td>Jarabe</td>
-                  <td>4567852</td>
-                  <td>10/10/2024</td>
-                  <td>15</td>
-              </tr>
-              <tr class="red">
-                  <td>Betametasona</td>
-                  <td>Crema</td>
-                  <td>T345</td>
-                  <td>15/10/2024</td>
-                  <td>5</td>
-              </tr>
-              <tr class="yellow">
-                  <td>Lomotil</td>
-                  <td>Tableta</td>
-                  <td>C45632</td>
-                  <td>10/01/2025</td>
-                  <td>40</td>
-              </tr>
-              <tr class="yellow">
-                  <td>Smecta</td>
-                  <td>Polvo</td>
-                  <td>456987</td>
-                  <td>20/02/2025</td>
-                  <td>10</td>
-              </tr>
-              <tr class="green">
-                  <td>Glibenclamida</td>
-                  <td>Tableta</td>
-                  <td>75214L</td>
-                  <td>14/11/2025</td>
-                  <td>8</td>
-              </tr>
-              <tr class="green">
-                  <td>Buscapina</td>
-                  <td>Tableta</td>
-                  <td>R4568</td>
-                  <td>10/12/2026</td>
-                  <td>22</td>
-              </tr>
-          </tbody>
-      </table>
-  </main>
-</div>

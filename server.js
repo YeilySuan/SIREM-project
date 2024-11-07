@@ -5,7 +5,6 @@ import cors from 'cors';
 
 
 
-
 const PORT = 3000;
 const app = express();
 
@@ -204,7 +203,7 @@ app.get('/api/medicamentos/:barCode', (req, res) => {
     });
 });
 
-
+/*codigo para obtener el medicamento por barCode*/
 app.get('/api/getMedicamentos/:barCode', (req, res) => {
 
     const barCode = req.params.barCode;
@@ -250,6 +249,45 @@ app.get('/api/getMedicamentos/:barCode', (req, res) => {
     });
 });
 */
+
+
+// Ruta para eliminar el medicamento y su lote correspondiente
+app.delete('/api/deleteMedicamentos/:barCode', (req, res) => {
+    const barCode = req.params.barCode;
+
+    // Primero, elimina el lote asociado al medicamento
+    const queryEliminarLote = `
+        DELETE l 
+        FROM lotes AS l
+        INNER JOIN medicamentos AS m ON l.Id_Medicamento = m.Id_medicamento
+        WHERE m.Codigo_barras = ?`;
+
+    db.query(queryEliminarLote, [barCode], (err, result) => {
+        if (err) {
+            console.error('Error al eliminar el lote:', err);
+            return res.status(500).send('Error al eliminar el lote');
+        }
+
+        // Luego, elimina el medicamento en la tabla medicamentos
+        const queryEliminarMedicamento = `
+            DELETE FROM medicamentos 
+            WHERE Codigo_barras = ?`;
+
+        db.query(queryEliminarMedicamento, [barCode], (err, result) => {
+            if (err) {
+                console.error('Error al eliminar el medicamento:', err);
+                return res.status(500).send('Error al eliminar el medicamento');
+            }
+
+            // Si la eliminación fue exitosa, envía una respuesta
+            res.status(200).send('Medicamento y lote eliminados exitosamente');
+        });
+    });
+});
+
+
+
+
 // Escucha en el puerto especificado
 app.listen(PORT, () => {
     console.log(`Server corriendo en el puerto ${PORT}`);

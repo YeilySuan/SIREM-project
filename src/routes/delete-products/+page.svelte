@@ -1,11 +1,9 @@
 <script> 
 
 let dialog;
-
 let barCode = '';
 let error = null;
 let data = [];
-
 let fechaVencimiento = "";
 let nombre = "";
 let dosis = "";
@@ -60,6 +58,47 @@ async function getData() {
 			data = []; 
 		}
 	}
+
+// Función para eliminar el medicamento desde la base de datos
+async function deleteMedicamento() {
+    if (!barCode) return; 
+
+    let url = `http://localhost:3000/api/deleteMedicamentos/${barCode}`;
+    
+    try {
+        const response = await fetch(url, {
+            method: 'DELETE',
+        });
+
+        if (!response.ok) {
+            throw new Error("No se pudo eliminar el Medicamento");
+        }
+
+        // Después de eliminar, limpia los datos y da retroalimentación al usuario
+        alert('Medicamento eliminado exitosamente');
+
+        // Limpia las variables de datos en la interfaz
+        barCode = '';
+        fechaVencimiento = '';
+        nombre = '';
+        dosis = '';
+        presentacion = '';
+        numeroLote = '';
+        cantidad = '';
+        laboratorio = '';
+
+        window.location.href = "/delete-products";
+    } catch (err) {
+        alert('Error al eliminar el medicamento: ' + err.message);
+    }
+}
+
+
+
+
+
+
+
 
 </script>
 
@@ -124,7 +163,7 @@ async function getData() {
      <form class="dialog" method="dialog">
       <p>¿Está seguro de querer eliminar este registro de forma permanente?</p>
       <button type="submit" id="button-cancelar" on:click={cerrarDialogo}>CANCELAR</button>
-      <button type="submit" id="button-eliminar" on:click={() => {cerrarDialogo();}}>ELIMINAR</button>  <!----esto debe modificarse para eliminar de database    -->
+      <button type="submit" id="button-eliminar" on:click={deleteMedicamento}>ELIMINAR</button>  <!----esto debe modificarse para eliminar de database    -->
     </form>
   </dialog>
   </div>
