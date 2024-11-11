@@ -60,6 +60,9 @@ const goToInventoryReport = () => {
     goto('inventory-report')
 };
 
+const goToHistoryRecords = () =>{
+  goto('history-records')
+};
 
 
 let dialog;
@@ -220,6 +223,9 @@ function closeSesion() {
           </tbody>
       </table>
   </main>
+
+  <button on:click={goToHistoryRecords} class="history">Historial Movimientos</button>
+
 </div>
 
 
@@ -278,6 +284,18 @@ dialog::backdrop {
   cursor: pointer;
   margin-left: 50px;
 }
+
+.history{
+  background-color: #2c82a4;
+  color: white;
+  font-weight: bold;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 50px;
+}
+
 
   /*CSS DEL BODY*/
   .container {
