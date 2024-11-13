@@ -203,7 +203,7 @@ app.get('/api/medicamentos/:barCode', (req, res) => {
     });
 });
 
-/*codigo para obtener el medicamento por barCode*/
+/*codigo para obtener el medicamento por barCode en main page*/
 app.get('/api/getMedicamentos/:barCode', (req, res) => {
 
     const barCode = req.params.barCode;
@@ -284,6 +284,37 @@ app.delete('/api/deleteMedicamentos/:barCode', (req, res) => {
         });
     });
 });
+
+
+//Ruta para buscar los medicamentos por creacion tabla historial_creacion_medicamentos
+app.get('/api/getHistorialCreacionMedicamentos', (req, res) => {
+
+    const queryMostrarDatos = `
+        SELECT 
+            h.Fecha_creacion,
+            m.Nombre,
+            m.Codigo_barras, 
+            l.Fecha_vencimiento
+        FROM historial_creacion_medicamentos AS h
+        INNER JOIN medicamentos AS m ON h.Id_medicamento = m.Id_medicamento
+        INNER JOIN lotes AS l ON m.Id_medicamento = l.Id_medicamento
+    `;
+
+    db.query(queryMostrarDatos, (err, result) => {
+        if (err) {
+            console.error("Error en la consulta:", err);
+            res.status(500).json({ error: 'Error en la consulta a la base de datos' });
+            return;
+        }
+        console.log("Datos obtenidos:", result);  // Verifica aquí
+        res.json(result);
+    });
+});
+
+
+
+
+
 
 
 

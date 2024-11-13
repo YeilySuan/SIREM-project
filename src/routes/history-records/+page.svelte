@@ -1,7 +1,32 @@
 <script>
-function returnMenu() {
+
+  function returnMenu() {
   window.location.href = "/main-page";
 };
+
+let historialData = [];
+let error = null;
+
+// Función para obtener los datos del historial de creación
+async function getHistorialData() {
+    try {
+      const response = await fetch("http://localhost:3000/api/getHistorialCreacionMedicamentos");
+
+      if (!response.ok) {
+        throw new Error("No se pudo obtener el historial de creación");
+      }
+
+      historialData = await response.json();
+      console.log("Datos recibidos:", historialData);  // Verifica aquí
+      error = null;
+    } catch (err) {
+      error = err.message;
+      historialData = [];
+      alert("Error al obtener el historial de creación. Por favor, intenta nuevamente.");
+    }
+  }
+
+
 </script>
 
 
@@ -9,24 +34,63 @@ function returnMenu() {
 <div class="background"></div>
 
 <div class="history-record"></div>
-<form class="main-form">
 <h1>HISTORIAL DE MOVIMIENTOS</h1>
 <h2>CREADO, ACTUALIZADO Y ELIMINADO</h2>
 
-<button class="create">Historial de Creación</button>
-<button class="update">Historial de Actualización</button>
-<button class="delete">Historial de Eliminación</button>
-</form>
+
+<div class="div-btns-hm">
+
+  <button type="button" on:click={getHistorialData} class="create">Historial de Creación</button>
+  <button class="update">Historial de Actualización</button>
+  <button class="delete">Historial de Eliminación</button>
+
+
+</div>
+
+{#if historialData.length > 0}
+  <table>
+    <thead>
+      <tr>
+        <th>Fecha de Creación</th>
+        <th>Nombre</th>
+        <th>Código de Barras</th>
+        <th>Fecha de Vencimiento</th>
+      </tr>
+    </thead>
+    <tbody>
+      {#each historialData as item}
+        <tr>
+          <td>{item.Fecha_creacion ? item.Fecha_creacion.slice(0, 10) : ''}</td>
+          <td>{item.Nombre ? item.Nombre.slice(0, 10) : ''}</td>
+          <td>{item.Codigo_barras ? item.Codigo_barras.slice(0, 10) : ''}</td>
+          <td>{item.Fecha_vencimiento ? item.Fecha_vencimiento.slice(0, 10) : ''}</td>
+        </tr>
+      {/each}
+    </tbody>
+  </table>
+{:else if error}
+  <p>{error}</p>
+{/if}
+
+
 </div>
 
 
-<div>
+
+
+
+
+<div class="exit">
 <button class="exit" on:click={returnMenu}>Regresar a Menu Principal</button>
 </div>
 
 
 
 <style>
+.div-btns-hm {
+  display: flex;
+  justify-content: center;
+}
 .background::before {
     content: '' ;
     position: fixed;
@@ -41,6 +105,27 @@ function returnMenu() {
     opacity: 0.5;
     z-index: -1;
   }
+
+  h1{
+    grid-column: span 2;
+    text-align: center;
+    background-color: #2c82a4a6; 
+    color: white;
+    padding: 10px;
+    border-radius: 30px;
+    font-size: 2.6rem;
+}
+
+h2{
+    grid-column: span 2;
+    text-align: center;
+    background-color: #2c82a4a6; 
+    color: white;
+    padding: 10px;
+    border-radius: 30px;
+    font-size: 1.6rem;
+}
+
 
    /*css de los botones historial create-update-delete*/
 
@@ -89,15 +174,45 @@ function returnMenu() {
   background-color: rgb(21, 73, 133)
 }
 
-.exit{
-  display: flex;
-  background-color: red;
+ 
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+table th,
+table td {
+  padding: 12px;
+  text-align: center;
+  border: 1px solid #2c82a4;
+}
+
+table th {
+  background-color: #2c82a4;
   color: white;
   font-weight: bold;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
 }
+
+table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+.exit {
+    display: flex;
+    background-color: #2c82a4;
+    color: white;
+    font-weight: bold;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    position: fixed; 
+    bottom: 70px;    
+    right: 890px;     
+    z-index: 10;    
+  }
 
 </style>
