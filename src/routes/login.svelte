@@ -17,9 +17,11 @@
     try {
       const result = await sendForm(userIdCard, userFullName, userEmail, userPassword, userRol);
       console.log('respuesta del server:', `Usuario registrado con el Id: ${result.id}`);
+      alert("Usuario Registrado exitosamente");
 
     } catch (error) {
       console.log('error en handleSubmit', error);
+      alert("error al registrar usuario");
     }
   }
 

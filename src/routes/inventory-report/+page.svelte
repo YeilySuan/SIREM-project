@@ -7,89 +7,82 @@
     navigate('/main-page')
   }
 
+  let inventoryReport = [];
+  let error = null;
+
+    // Función para obtener los datos del historial de creación
+    async function getInventoryReport() {
+        try {
+          const response = await fetch("http://localhost:3000/api/getInventoryMedicamentos");
+
+          if (!response.ok) {
+            throw new Error("No se pudo obtener el historial de creación");
+          }
+
+          inventoryReport = await response.json();
+          console.log("Datos recibidos:", inventoryReport);  // Verifica aquí
+          error = null;
+        } catch (err) {
+          error = err.message;
+          inventoryReport = [];
+          alert("Error al obtener la informacion del inventario.");
+        }
+      }
+
+
   </script>
-
-
-
 
 
 <div>
   <div class="background"></div>
   <div class="inventory-report"></div>
   <form class="main-form">
-  <h1>BALANCE DE INVENTARIO</h1>
+    <h1>BALANCE DE INVENTARIO</h1>
 
   <div class="form-group full-width">
-  <button class="buscar-btn" id="buscar-btn">REPORTE DE INVENTARIO</button>
+  <button on:click={getInventoryReport} class="buscar-btn" id="buscar-btn">REPORTE DE INVENTARIO</button>
   </div>
 
-  <table class="inventory-table" id="resultado-busqueda">
-    
+
+
+{#if inventoryReport.length > 0}
+  <table>
     <thead>
-        <tr>
-            <th>Codigo de barras</th>
-            <th>Nombre</th>
-            <th>Presentación</th>
-            <th>Dosis</th>
-            <th>Lote</th>
-            <th>Fecha de Vencimiento</th>
-            <th>Cantidad</th>
-            <th>Laboratorio</th>
-        </tr>
+      <tr>
+        <th>Codigo de Barras</th>
+        <th>Nombre</th>
+        <th>Dosis</th>
+        <th>Presentacion</th>
+        <th>Numero de Lote</th>
+        <th>Cantidad</th>
+        <th>Laboratorio</th>
+        <th>Fecha de Vencimiento</th>
+      </tr>
     </thead>
     <tbody>
-        
-     
-      <tr>
-        <td id="resultado-codigo"></td>
-        <td id="resultado-nombre"></td>
-        <td id="resultado-presentacion"></td>
-        <td id="resultado-dosis"></td>
-        <td id="resultado-lote"></td>
-        <td id="resultado-fecha"></td>
-        <td id="resultado-cantidad"></td>
-        <td id="resultado-laboratorio"></td>
-      </tr>
-     
-      <tr>
-        <td id="resultado-codigo"></td>
-        <td id="resultado-nombre"></td>
-        <td id="resultado-presentacion"></td>
-        <td id="resultado-dosis"></td>
-        <td id="resultado-lote"></td>
-        <td id="resultado-fecha"></td>
-        <td id="resultado-cantidad"></td>
-        <td id="resultado-laboratorio"></td>
-      </tr>
-      <tr>
-        <td id="resultado-codigo"></td>
-        <td id="resultado-nombre"></td>
-        <td id="resultado-presentacion"></td>
-        <td id="resultado-dosis"></td>
-        <td id="resultado-lote"></td>
-        <td id="resultado-fecha"></td>
-        <td id="resultado-cantidad"></td>
-        <td id="resultado-laboratorio"></td>
-      </tr>
-      <tr>
-        <td id="resultado-codigo"></td>
-        <td id="resultado-nombre"></td>
-        <td id="resultado-presentacion"></td>
-        <td id="resultado-dosis"></td>
-        <td id="resultado-lote"></td>
-        <td id="resultado-fecha"></td>
-        <td id="resultado-cantidad"></td>
-        <td id="resultado-laboratorio"></td>
-      </tr>
+      {#each inventoryReport as item}
+        <tr>
+          <td>{item.Codigo_barras ? item.Codigo_barras.slice() : ''}</td>
+          <td>{item.Nombre ? item.Nombre.slice() : ''}</td>
+          <td>{item.Dosis ? item.Dosis.slice() : ''}</td>
+          <td>{item.Presentacion ? item.Presentacion.slice() : ''}</td>
+          <td>{item.Numero_lote ? item.Numero_lote.slice() : ''}</td>
+          <td>{item.Cantidad}</td>
+          <td>{item.Laboratorio ? item.Laboratorio.slice() : ''}</td>
+          <td>{item.Fecha_vencimiento ? item.Fecha_vencimiento.slice(0, 10) : ''}</td>
+        </tr>
+      {/each}
     </tbody>
-</table>
+  </table>
+{:else if error}
+  <p>{error}</p>
+{/if}
 
-
-  <button on:click={returnMenu} class="exit-btn">REGRESAR A MENU PRINCIPAL</button>
-
-</form>
-
-
+    
+  <div>
+    <button on:click={returnMenu} class="exit-btn">REGRESAR A MENU PRINCIPAL</button>
+  </div>
+  </form>
 </div>
 
 
@@ -112,29 +105,7 @@
   z-index: -1;
 }
 
-/*css de la tabla*/
-.inventory-table{
-  width:100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-}
 
-.inventory-table th,
-.inventory-table td {
- border: 1px solid#000;
- padding: 10px;
- text-align: left;
-}
-
-.inventory-table th{
-  background-color:#2c82a4a6;
-  font-weight: bold;
-  text-align: center;
-}
-
-.inventory-table td{
-  background-color: beige;
-}
 
 /*css del titulo*/
 h1{
@@ -191,7 +162,31 @@ h1{
     border-radius: 10px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
  }
+ table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
 
+table th,
+table td {
+  padding: 12px;
+  text-align: center;
+  border: 1px solid #2c82a4;
+}
+
+table th {
+  background-color: #2c82a4;
+  color: white;
+  font-weight: bold;
+}
+
+table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
   .form-group {
     display: flex;
     flex-direction: column;

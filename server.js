@@ -285,19 +285,53 @@ app.delete('/api/deleteMedicamentos/:barCode', (req, res) => {
     });
 });
 
+/*
+app.delete('/api/deleteMedicamentos/:barCode', (req, res) => {
+    const barCode = req.params.barCode;
 
+    // Primero, elimina el medicamento en la tabla medicamentos
+    const queryEliminarMedicamento = `
+        DELETE FROM medicamentos 
+        WHERE Codigo_barras = ?`;
+
+    db.query(queryEliminarMedicamento, [barCode], (err, result) => {
+        if (err) {
+            console.error('Error al eliminar el medicamento:', err);
+            return res.status(500).send('Error al eliminar el medicamento');
+        }
+
+        // Luego, elimina el lote asociado al medicamento
+        const queryEliminarLote = `
+            DELETE l 
+            FROM lotes AS l
+            INNER JOIN medicamentos AS m ON l.Id_Medicamento = m.Id_medicamento
+            WHERE m.Codigo_barras = ?`;
+
+        db.query(queryEliminarLote, [barCode], (err, result) => {
+            if (err) {
+                console.error('Error al eliminar el lote:', err);
+                return res.status(500).send('Error al eliminar el lote');
+            }
+
+            // Si la eliminación fue exitosa, envía una respuesta
+            res.status(200).send('Medicamento y lote eliminados exitosamente');
+        });
+    });
+});
+
+*/
 //Ruta para buscar los medicamentos por creacion tabla historial_creacion_medicamentos
 app.get('/api/getHistorialCreacionMedicamentos', (req, res) => {
 
     const queryMostrarDatos = `
         SELECT 
-            h.Fecha_creacion,
-            m.Nombre,
-            m.Codigo_barras, 
-            l.Fecha_vencimiento
-        FROM historial_creacion_medicamentos AS h
-        INNER JOIN medicamentos AS m ON h.Id_medicamento = m.Id_medicamento
-        INNER JOIN lotes AS l ON m.Id_medicamento = l.Id_medicamento
+            Fecha_creacion,
+            Nombre_medicamento,
+            Codigo_barras, 
+            Fecha_vencimiento,
+            Lote_medicamento,
+            Creado_por
+        FROM historial_creacion_medicamentos
     `;
 
     db.query(queryMostrarDatos, (err, result) => {
@@ -313,6 +347,34 @@ app.get('/api/getHistorialCreacionMedicamentos', (req, res) => {
 
 
 
+//Ruta para buscar los medicamentos para el page inventory-report
+app.get('/api/getInventoryMedicamentos', (req, res) => {
+
+    const queryMostrarDatos = `
+        SELECT 
+            m.Codigo_barras, 
+            m.Nombre,
+            m.Dosis,
+            m.Presentacion,
+            l.Numero_lote,
+            l.Cantidad,
+            l.Laboratorio,
+            l.Fecha_vencimiento
+        FROM medicamentos as m
+        INNER JOIN lotes AS l 
+        ON m.Id_medicamento = l.Id_medicamento
+    `;
+
+    db.query(queryMostrarDatos, (err, result) => {
+        if (err) {
+            console.error("Error en la consulta:", err);
+            res.status(500).json({ error: 'Error en la consulta a la base de datos' });
+            return;
+        }
+        console.log("Datos obtenidos:", result);  // Verifica aquí
+        res.json(result);
+    });
+});
 
 
 

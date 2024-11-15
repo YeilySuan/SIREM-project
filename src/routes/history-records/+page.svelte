@@ -55,15 +55,20 @@ async function getHistorialData() {
         <th>Nombre</th>
         <th>Código de Barras</th>
         <th>Fecha de Vencimiento</th>
+        <th>Creado Por</th>
+        <th>Lote</th>
       </tr>
     </thead>
     <tbody>
       {#each historialData as item}
         <tr>
-          <td>{item.Fecha_creacion ? item.Fecha_creacion.slice(0, 10) : ''}</td>
-          <td>{item.Nombre ? item.Nombre.slice(0, 10) : ''}</td>
-          <td>{item.Codigo_barras ? item.Codigo_barras.slice(0, 10) : ''}</td>
-          <td>{item.Fecha_vencimiento ? item.Fecha_vencimiento.slice(0, 10) : ''}</td>
+          <td>{item.Fecha_creacion}</td>
+          <td>{item.Nombre_medicamento}</td>
+          <td>{item.Codigo_barras}</td>
+          <td>{item.Fecha_vencimiento}</td>
+          <td>{item.Lote_medicamento}</td>
+          <td>{item.Creado_por}</td>
+  
         </tr>
       {/each}
     </tbody>
@@ -74,10 +79,6 @@ async function getHistorialData() {
 
 
 </div>
-
-
-
-
 
 
 <div class="exit">
