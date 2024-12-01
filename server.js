@@ -126,7 +126,32 @@ app.post('/api/createMedicamentos', (req, res) => {
 });
 
 
+app.post('/api/validateLogginToMainMenu', (req, res) => {
+    const { logginCedula, logginPassword } = req.body;
 
+    const validateUserAndPass = `SELECT * FROM usuarios WHERE Cedula = ?`;
+
+    db.query(validateUserAndPass, [logginCedula], (err, results) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({message: 'Error en el servidor'});
+        }
+
+        if (results.length === 0) {
+            return res.status(401).json({message: 'Usuario no encontrado'});
+        }
+
+        const user = results[0];
+
+        if (user.Contraseña === logginPassword) {
+            return res.status(200).json({message: 'Autenticacion Exitosa'});
+        } else {
+            return res.status(401).json({message: 'Usuario o contraseña Incorrectas'});
+        }
+
+    });
+
+});
 
 //final de crear medicamento yeily
 
@@ -255,7 +280,7 @@ app.get('/api/getMedicamentos/:barCode', (req, res) => {
 app.delete('/api/deleteMedicamentos/:barCode', (req, res) => {
     const barCode = req.params.barCode;
 
-    // Primero, elimina el lote asociado al medicamento
+    
     const queryEliminarLote = `
         DELETE l 
         FROM lotes AS l
@@ -268,7 +293,7 @@ app.delete('/api/deleteMedicamentos/:barCode', (req, res) => {
             return res.status(500).send('Error al eliminar el lote');
         }
 
-        // Luego, elimina el medicamento en la tabla medicamentos
+        
         const queryEliminarMedicamento = `
             DELETE FROM medicamentos 
             WHERE Codigo_barras = ?`;

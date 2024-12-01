@@ -1,12 +1,14 @@
 <script>
   import { navigate } from "svelte-routing";
-  //import { goto } from '$app/navigation';
+  import { goto } from '$app/navigation';
   import AuthenticationModal from "./authentication-modal.svelte";
   import { modalStore } from "../stores/modal-store";
   import { sendForm } from '../lib/formHandler';
   import { createEventDispatcher } from 'svelte';
 
-
+  let logginCedula = '';
+  let logginPassword = '';
+  let errorMessageUP = '';
   let userIdCard = '';
   let userFullName = '';
   let userEmail = '';
@@ -23,16 +25,15 @@
       console.log('error en handleSubmit', error);
       alert("error al registrar usuario");
     }
-  }
-
+  }  
 
   let isActive = false;
   let containerClass = "container";
-
+/*
   function goToMain() {
    navigate('/main-page');
   }
-
+*/
 
   function openModal(event) {
     event.preventDefault();
@@ -47,6 +48,38 @@
   function removeClassList() {
     isActive = false;
   };
+
+  async function logginSuccess(logginCedula, logginPassword) {
+
+  try {
+    const response = await fetch('http://localhost:3000/api/validateLogginToMainMenu', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ logginCedula, logginPassword })
+    });
+
+    const data = await response.json();
+    
+    
+    if (!response.ok) {      
+      errorMessageUP = data.message || 'Error desconocido o Usuario y contraseña incorrectos';
+      alert(errorMessageUP)
+      return; 
+    } else {      
+      goto('/main-page');
+    }
+
+  } catch (error) {
+   
+    console.error('Hubo un problema con la solicitud:', error);
+   
+    errorMessage = 'Hubo un problema con la conexión o con el servidor. Intenta nuevamente.';
+  }
+}
+
+
 
 </script>
 
@@ -320,9 +353,9 @@
       <form>
           <h1>Iniciar Sesion</h1>
           <span>Use cedula y contraseña</span>
-          <input type="text" placeholder="Cedula">
-          <input type="password" placeholder="Contraseña">
-          <button on:click={goToMain} preventDefault>Ingresar</button>
+          <input type="text" placeholder="Cedula" bind:value={logginCedula} required>
+          <input type="password" placeholder="Contraseña" bind:value={logginPassword} required>
+          <button on:click={logginSuccess(logginCedula, logginPassword)} preventDefault>Ingresar</button>
       </form>
   </div>
   <div class="toggle-container">
