@@ -5,7 +5,7 @@ export async function sendValidateAdmin(username, password) {
     password
   };
 
-  const response = await fetch('http://localhost:3000/validateAdmin', {
+  const response = await fetch('http://b5sf2rby3y9yoblljx3e-mysql.services.clever-cloud.com/api/validateAdmin', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

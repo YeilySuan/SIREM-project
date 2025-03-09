@@ -9,6 +9,15 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Ejemplo de CORS en un servidor (usando Express.js)
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*'); // O el dominio específico
+    res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    next();
+  });
+  
+
 
 app.get('/', (req, res) => {
     res.send("Hola pagina principal");    

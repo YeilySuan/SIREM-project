@@ -5,11 +5,11 @@ import mysql from 'mysql2';
 //dotenv.config();
 
 const connection = await mysql.createConnection({
-    host:'localhost', //process.env.DB_HOST,// ,
-    user: 'root',//process.env.DB_USER, //
-    password:'r12345',// process.env.DB_PASSWORD, //
-    database:'db_sirem',// process.env.DB_NAME, //
-    //port: process.env.DB_PORT, 
+    host: 'b5sf2rby3y9yoblljx3e-mysql.services.clever-cloud.com',//'localhost', //process.env.DB_HOST,// ,
+    user: 'u2kk1djy4appdwvz',//'root',//process.env.DB_USER, //
+    password: 'uuycP8FhRtjGQr74piZa',//'r12345',// process.env.DB_PASSWORD, //
+    database: 'b5sf2rby3y9yoblljx3e',//'db_sirem',// process.env.DB_NAME, //
+    port: 3306, 
 });
 
 

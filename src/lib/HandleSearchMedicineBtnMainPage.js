@@ -1,7 +1,7 @@
 export async function getMedicineForBtnMainPage(barCode) {
  
   try {
-    const response = await fetch(`http://localhost:3000/api/getMedicineSearchButton?barCode=${barCode}`);
+    const response = await fetch(`http://b5sf2rby3y9yoblljx3e-mysql.services.clever-cloud.com/api/getMedicineSearchButton?barCode=${barCode}`);
 
     if (!response.ok) {
      const errorText = await response.text();
