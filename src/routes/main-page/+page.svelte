@@ -80,8 +80,43 @@ function closeSesion() {
     cerrarDialogo();
   }
 
+// Función para calcular la diferencia de fechas -MEDICAMENTOS PROXIMOS A VENCER-
+let inventoryReport = [];
 
+//Función para obtener los datos del historial de creación
+async function getInventoryReport() {
+  try {
+      const response = await fetch("http://localhost:3000/api/getInventoryMedicamentos");
+
+      if (!response.ok) {
+        throw new Error("No se pudo obtener el historial de creación");
+      }
+
+      inventoryReport = await response.json();
+      console.log("Datos recibidos:", inventoryReport);
+      error = null;
+    } catch (err) {
+      error = err.message;
+      inventoryReport = [];
+      alert("Error al obtener la información del inventario.");
+    }
+}
+
+function getRowColor(fechaVencimiento) {
+    const hoy = new Date();
+    const fechaVencimientoDate = new Date(fechaVencimiento);
+    const diferenciaMeses = (fechaVencimientoDate.getFullYear() - hoy.getFullYear()) * 12 + fechaVencimientoDate.getMonth() - hoy.getMonth();
+
+    if (diferenciaMeses <= 3) {
+        return 'background-color: #ff6666;'; // Rojo claro para 3 meses o menos
+    } else if (diferenciaMeses <= 6) {
+        return 'background-color: #FFEB99;'; // Amarillo claro para 6 meses o menos
+    } else {
+        return 'background-color: #B3FFB3;'; // Verde claro para más de 6 meses
+    }
+}
 </script>        
+
 
 
 
@@ -89,7 +124,7 @@ function closeSesion() {
   <header>
       <div class="header-left" >
           <img src="/src/lib/images/LogoSIREM.png" alt="SIREM Logo" class="logo">
-          <h1>Sistema de Información Registro y Notificación de Vencimiento de Medicamentos</h1>
+          <h1>Sistema de Información Registro y Notificación de Vencimiento de Medicamentos - SIREM </h1>
       </div>
       <div class="header-right">
           <p>Yeily Ortiz Angarita</p>
@@ -108,7 +143,7 @@ function closeSesion() {
 </dialog>
 </div>
 
-  <main>
+
       
       <div class="actions">
           <button on:click={goToUserManagement}>Gestión de Usuarios</button>
@@ -158,75 +193,55 @@ function closeSesion() {
      
       <button  id="limpiarBtn" class="clear-btn" on:click={clearFields}>Limpiar Campos</button>
 
+
+
+<!-- este codigo es para el modulo de próximos a vencer -->
+      <div>
+        <div class="background"></div>
+        <div class="inventory-report"></div>
+        <form class="main-form">
+          <h2> ⚠️MEDICAMENTOS PRÓXIMOS A VENCER⚠️</h2>
       
-      <h2>Próximos a Vencer</h2>
-      <table class="expiring">
-          <thead>
-              <tr>
+          <div class="form-group full-width">
+            <button on:click={getInventoryReport} class="buscar-btn" id="buscar-btn-proximos">REPORTE DE INVENTARIO</button>
+          </div>
+      
+          {#if inventoryReport.length > 0}
+            <table>
+              <thead>
+                <tr>
+                  <th>Código de Barras</th>
                   <th>Nombre</th>
+                  <th>Dosis</th>
                   <th>Presentación</th>
-                  <th>Lote</th>
-                  <th>Fecha de Vencimiento</th>
+                  <th>Número de Lote</th>
                   <th>Cantidad</th>
-              </tr>
-          </thead>
-          <tbody>
-              <tr class="red">
-                  <td>Acetaminofen</td>
-                  <td>Tableta</td>
-                  <td>RC45789</td>
-                  <td>20/09/2024</td>
-                  <td>10</td>
-              </tr>
-              <tr class="red">
-                  <td>Ibuprofeno</td>
-                  <td>Jarabe</td>
-                  <td>4567852</td>
-                  <td>10/10/2024</td>
-                  <td>15</td>
-              </tr>
-              <tr class="red">
-                  <td>Betametasona</td>
-                  <td>Crema</td>
-                  <td>T345</td>
-                  <td>15/10/2024</td>
-                  <td>5</td>
-              </tr>
-              <tr class="yellow">
-                  <td>Lomotil</td>
-                  <td>Tableta</td>
-                  <td>C45632</td>
-                  <td>10/01/2025</td>
-                  <td>40</td>
-              </tr>
-              <tr class="yellow">
-                  <td>Smecta</td>
-                  <td>Polvo</td>
-                  <td>456987</td>
-                  <td>20/02/2025</td>
-                  <td>10</td>
-              </tr>
-              <tr class="green">
-                  <td>Glibenclamida</td>
-                  <td>Tableta</td>
-                  <td>75214L</td>
-                  <td>14/11/2025</td>
-                  <td>8</td>
-              </tr>
-              <tr class="green">
-                  <td>Buscapina</td>
-                  <td>Tableta</td>
-                  <td>R4568</td>
-                  <td>10/12/2026</td>
-                  <td>22</td>
-              </tr>
-          </tbody>
-      </table>
-  </main>
+                  <th>Laboratorio</th>
+                  <th>Fecha de Vencimiento</th>
+                </tr>
+              </thead>
+              <tbody>
+                {#each inventoryReport as item}
+                  <tr style={getRowColor(item.Fecha_vencimiento)}>
+                    <td>{item.Codigo_barras || ''}</td>
+                    <td>{item.Nombre || ''}</td>
+                    <td>{item.Dosis || ''}</td>
+                    <td>{item.Presentacion || ''}</td>
+                    <td>{item.Numero_lote || ''}</td>
+                    <td>{item.Cantidad}</td>
+                    <td>{item.Laboratorio || ''}</td>
+                    <td>{item.Fecha_vencimiento ? item.Fecha_vencimiento.slice(0, 10) : ''}</td>
+                  </tr>
+                {/each}
+              </tbody>
+            </table>
+          {:else if error}
+            <p>{error}</p>
+          {/if}
+      </div>
+  </div>
 
-  <button on:click={goToHistoryRecords} class="history">Historial Movimientos</button>
 
-</div>
 
 
 <style>
@@ -285,19 +300,32 @@ dialog::backdrop {
   margin-left: 50px;
 }
 
-.history{
-  background-color: #2c82a4;
+/*ESTILOS DE BOTON Y H2 DE PROXIMOS A VENCER */
+#buscar-btn-proximos {
+  background-color: green;
   color: white;
   font-weight: bold;
   border: none;
   padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
-  margin-left: 50px;
+  display: block;            
+  margin: 0 auto;            
+}
+
+
+h2 {
+  display: flex;
+  align-items: center;      
+  justify-content: center; 
+  color: #382435;
+  height: 10vh;        
+  margin: 0;               
 }
 
 
   /*CSS DEL BODY*/
+
   .container {
   background-color: #f4f4f4;
   }
@@ -402,26 +430,8 @@ dialog::backdrop {
 
   /*BOTON DE LIMPIAR CAMPOS*/
   
-  .expiring {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
-  }
-  /*contenedores de las tablas*/
-  
-  .expiring th {
-  background-color: #2c82a4;
-  color: white;
-  font-weight: bold;
-  padding:15px;
-  }
+ 
   /*CSS DE LAS TABLAS*/
-  
-  .expiring td {
-  padding: 10px;
-  border: 1px solid #312f2f;
-  text-align: center;
-  }
   /*CSS BOTON LIMPIAR CAMPOS*/
   .clear-btn {
   display: block;
@@ -436,32 +446,8 @@ dialog::backdrop {
   cursor: pointer;
   }
 
-  .clear-btn:hover {
-  background-color: darkred;
-  }
 
-  .red {
-  background-color:RED;
-  color: white;
-  }
 
-  .yellow {
-  background-color:yellow;
-  }
-
-  .green {
-  background-color:green;
-  }
-
-  /*Este es el estilo de la tabla de buscar medicamento por codigo de barras*/
-
-  .result-table{
-  border: 1px solid #000;
-  width: 100%;
-  background-color: #ffffff;
-  padding: 0px;
-  border-collapse: collapse;
-  }
   td {
   width: 10%;
   text-align: center;
@@ -481,4 +467,6 @@ dialog::backdrop {
   color: white;
   font-weight: bold;
   }
+
+
 </style>

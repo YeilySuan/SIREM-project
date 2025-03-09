@@ -1,9 +1,7 @@
 import express from 'express';
 import db from './db-connection.js';
-import 'dotenv/config';
+//import 'dotenv/config';//
 import cors from 'cors';
-
-
 
 const PORT = 3000;
 const app = express();
@@ -23,7 +21,6 @@ db.connect(err => {
     }
     console.log('Conexión exitosa a la base de datos');
 });
-
 
 (async function () {
     let adminIdCard = "admin";
@@ -63,8 +60,6 @@ db.connect(err => {
         }
     });
 })();
-
-
 
 app.post('/api/submit', (req, res) => {
 
@@ -386,6 +381,7 @@ app.get('/api/getInventoryMedicamentos', (req, res) => {
         FROM medicamentos as m
         INNER JOIN lotes AS l 
         ON m.Id_medicamento = l.Id_medicamento
+        ORDER BY l.Fecha_vencimiento ASC
     `;
 
     db.query(queryMostrarDatos, (err, result) => {
@@ -398,9 +394,6 @@ app.get('/api/getInventoryMedicamentos', (req, res) => {
         res.json(result);
     });
 });
-
-
-
 
 
 
