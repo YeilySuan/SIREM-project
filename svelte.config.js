@@ -1,6 +1,44 @@
-import adapter from '@sveltejs/adapter-vercel';
+import adapter from '@sveltejs/adapter-node';
 
 /** @type {import('@sveltejs/kit').Config} */
+const config = {
+	kit: {
+		// Aquí defines el adaptador que deseas usar
+		adapter: adapter()
+	}
+};
+
+export default config;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*import adapter from '@sveltejs/adapter-vercel';
+
+import adapter from '@sveltejs/adapter-node';
+
+export default {
+	kit: {
+		adapter: adapter()
+	}
+};
+
+*/
+
+/*
+/** @type {import('@sveltejs/kit').Config} */
+
+/*
 const config = {
 	kit: {
 		// adapter-auto only supports some environments, see https://kit.svelte.dev/docs/adapter-auto for a list.
@@ -12,3 +50,4 @@ const config = {
 
 export default config;
 
+*/

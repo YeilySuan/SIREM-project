@@ -29,7 +29,7 @@ app.use((req, res, next) => {
 
 
 app.get('/', (req, res) => {
-    res.render("login");
+    res.redirect("login");
     //res.sendFile('index.html', { root: __dirname });     
 });
 /*
