@@ -14,7 +14,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
-app.set("view engine", "ejs");
+//app.set("view engine", "ejs");
 
 //app.use("/public", express.static(__dirname + "/public"));
 
