@@ -2,7 +2,9 @@ import express from 'express';
 import db from './db-connection.js';
 import 'dotenv/config';//
 import cors from 'cors';
-//import { goto } from '$app/navigation';
+import { goto } from '$app/navigation';
+//import { navigate } from 'svelte-routing';
+
 
 const PORT = process.env.DB_PORT || 8080;
 const app = express();
@@ -22,7 +24,7 @@ app.use((req, res, next) => {
 
 app.get('/', (req, res) => {
     //res.send("Hola pagina principal");    
-    res.redirect('/src/routes/login.svelte');
+    goto('/login');
 });
 
 app.get('/login', (req, res) => {
