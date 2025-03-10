@@ -2,9 +2,9 @@ import express from 'express';
 import db from './db-connection.js';
 import 'dotenv/config';//
 import cors from 'cors';
-import { goto } from '$app/navigation';
+//import { goto } from '$app/navigation';
 //import { navigate } from 'svelte-routing';
-
+import path from 'path';
 
 const PORT = process.env.DB_PORT || 8080;
 const app = express();
@@ -23,14 +23,13 @@ app.use((req, res, next) => {
 
 
 app.get('/', (req, res) => {
-    //res.send("Hola pagina principal");    
-    goto('/login');
+    res.sendFile(path.join(__dirname, 'src', '/app.html'));    
 });
-
+/*
 app.get('/login', (req, res) => {
     res.sendFile('login.html', { root: __dirname });
 });
-
+*/
 db.connect(err => {
     if (err) {
         console.error('Error al conectar a la base de datos:', err);
