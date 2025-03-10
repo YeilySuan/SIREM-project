@@ -6,11 +6,17 @@ import cors from 'cors';
 //import { navigate } from 'svelte-routing';
 import path from 'path';
 
+
+
 const PORT = process.env.DB_PORT || 8080;
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({extended:false}));
+app.set("view engine", "ejs");
+
+app.use("/public", express.static(__dirname + "/public"));
 
 // Ejemplo de CORS en un servidor (usando Express.js)
 app.use((req, res, next) => {
@@ -23,7 +29,8 @@ app.use((req, res, next) => {
 
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'src', '/app.html'));    
+    res.render("login");
+    //res.sendFile('index.html', { root: __dirname });     
 });
 /*
 app.get('/login', (req, res) => {
