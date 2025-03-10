@@ -1,9 +1,9 @@
 import express from 'express';
 import db from './db-connection.js';
-//import 'dotenv/config';//
+import 'dotenv/config';//
 import cors from 'cors';
 
-const PORT = 3000;
+const PORT = process.env.DB_PORT || 8080;
 const app = express();
 
 app.use(cors());
@@ -407,6 +407,6 @@ app.get('/api/getInventoryMedicamentos', (req, res) => {
 
 
 // Escucha en el puerto especificado
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server corriendo en el puerto ${PORT}`);
 });
