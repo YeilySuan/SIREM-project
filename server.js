@@ -22,7 +22,11 @@ app.use((req, res, next) => {
 
 app.get('/', (req, res) => {
     //res.send("Hola pagina principal");    
-    res.redirect('/login');
+    res.redirect('/src/routes/login.svelte');
+});
+
+app.get('/login', (req, res) => {
+    res.sendFile('login.html', { root: __dirname });
 });
 
 db.connect(err => {
