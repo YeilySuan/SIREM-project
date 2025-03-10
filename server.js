@@ -2,6 +2,7 @@ import express from 'express';
 import db from './db-connection.js';
 import 'dotenv/config';//
 import cors from 'cors';
+//import { goto } from '$app/navigation';
 
 const PORT = process.env.DB_PORT || 8080;
 const app = express();
@@ -20,7 +21,8 @@ app.use((req, res, next) => {
 
 
 app.get('/', (req, res) => {
-    res.send("Hola pagina principal");    
+    //res.send("Hola pagina principal");    
+    res.redirect('/login');
 });
 
 db.connect(err => {
