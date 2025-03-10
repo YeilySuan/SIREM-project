@@ -12,7 +12,7 @@ export async function sendMedicineForm(barCode, name, dose, presentation, number
     idUsuarioMed
    };
   
-   const response = await fetch('http://b5sf2rby3y9yoblljx3e-mysql.services.clever-cloud.com/api/createMedicamentos', {
+   const response = await fetch('http://siremproject.cleverapps.io/api/createMedicamentos', {
     method:'POST',
     headers: {
       'Content-Type': 'application/json',

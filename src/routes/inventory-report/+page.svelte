@@ -13,7 +13,7 @@
     // Función para obtener los datos del historial de creación
     async function getInventoryReport() {
         try {
-          const response = await fetch("http://localhost:3000/api/getInventoryMedicamentos");
+          const response = await fetch("http://siremproject.cleverapps.io/api/getInventoryMedicamentos");
 
           if (!response.ok) {
             throw new Error("No se pudo obtener el historial de creación");

@@ -52,7 +52,7 @@
   async function logginSuccess(logginCedula, logginPassword) {
 
   try {
-    const response = await fetch('http://localhost:3000/api/validateLogginToMainMenu', {
+    const response = await fetch('http://siremproject.cleverapps.io/api/validateLogginToMainMenu', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -32,7 +32,7 @@ async function getData() {
 
     if (!barCode) return; 
 
-		let url = `http://localhost:3000/api/getMedicamentos/${barCode}`;
+		let url = `http://siremproject.cleverapps.io/api/getMedicamentos/${barCode}`;
 
 		try {
 			const response = await fetch(url);
