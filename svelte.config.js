@@ -1,16 +1,16 @@
+
 import adapter from '@sveltejs/adapter-node';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
 	kit: {
 		// Aquí defines el adaptador que deseas usar
-		adapter: adapter()
+		adapter: adapter(),
+		
 	}
 };
 
 export default config;
-
-
 
 
 
