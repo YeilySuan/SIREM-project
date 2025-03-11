@@ -4,7 +4,7 @@ import 'dotenv/config';//
 import cors from 'cors';
 //import { goto } from '$app/navigation';
 //import { navigate } from 'svelte-routing';
-import path from 'path';
+//import path from 'path';
 
 
 
@@ -26,10 +26,13 @@ app.use((req, res, next) => {
     next();
   });
   
-
+function openPage() {
+    window.location.href = '/login';
+}
 
 app.get('/', (req, res) => {
-    res.redirect("login");
+    openPage();
+    //res.redirect('/login');
     //res.sendFile('index.html', { root: __dirname });     
 });
 /*
