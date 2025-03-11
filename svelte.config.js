@@ -5,7 +5,7 @@ import adapter from '@sveltejs/adapter-node';
 const config = {
 	kit: {
 		// Aquí defines el adaptador que deseas usar
-		adapter: adapter(),
+		adapter: adapter()
 		
 	}
 };
