@@ -5,7 +5,7 @@
 	"scripts": {
 		"start": "node server.js",
 		"dev": "vite dev",
-		"build": "svelte-kit build",
+		"build": "vite build",
 		"preview": "vite preview",
 		"lint": "prettier --check . && eslint .",
 		"format": "prettier --write ."
@@ -14,7 +14,7 @@
 		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/adapter-node": "^5.2.12",
 		"@sveltejs/adapter-vercel": "^5.6.3",
-		"@sveltejs/kit": "^2.0.0",
+		"@sveltejs/kit": "^2.19.0",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
 		"@types/eslint": "^9.6.0",
 		"eslint": "^9.0.0",

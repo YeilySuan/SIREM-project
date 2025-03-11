@@ -2,7 +2,7 @@ import express from 'express';
 import db from './db-connection.js';
 import 'dotenv/config';//
 import cors from 'cors';
-import { handler } from './build/handler.js';
+//import { handler } from './build/handler.js';
 //import { goto } from '$app/navigation';
 //import { navigate } from 'svelte-routing';
 //import path from 'path';
@@ -19,7 +19,7 @@ app.use(express.urlencoded({extended:false}));
 //app.set("view engine", "ejs");
 // Sirve los archivos generados por SvelteKit
 app.use(sirv('static', { dev: true }));
-app.use(handler);
+//app.use(handler);
 //app.use("/public", express.static(__dirname + "/public"));
 
 // Ejemplo de CORS en un servidor (usando Express.js)
