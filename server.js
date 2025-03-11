@@ -30,11 +30,12 @@ app.use((req, res, next) => {
     next();
   });
   
-
+/*
 app.get('/', (req, res) => {
     res.redirect('/login');
     //res.sendFile('index.html', { root: __dirname });     
 });
+*/
 /*
 app.get('/login', (req, res) => {
     res.sendFile('login.html', { root: __dirname });
