@@ -26,13 +26,9 @@ app.use((req, res, next) => {
     next();
   });
   
-function openPage() {
-    window.location.href = '/login';
-}
 
 app.get('/', (req, res) => {
-    openPage();
-    //res.redirect('/login');
+    res.redirect('/login');
     //res.sendFile('index.html', { root: __dirname });     
 });
 /*
