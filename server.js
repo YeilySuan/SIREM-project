@@ -1,4 +1,5 @@
 import express from 'express';
+import { createRequestHandler } from '@sveltejs/kit/node';
 import db from './db-connection.js';
 import 'dotenv/config';//
 import cors from 'cors';
@@ -7,8 +8,32 @@ import { fileURLToPath } from 'url';
 //import { goto } from '$app/navigation';
 //import { navigate } from 'svelte-routing';
 import path from 'path';
-import sirv from 'sirv';
+//import sirv from 'sirv';
+const app = express();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+// Habilitar CORS
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
+// Servir archivos estáticos generados por SvelteKit (si existen)
+app.use(express.static(path.join(__dirname, 'static')));
+
+// Ruta para manejar la solicitud de SvelteKit desde el build
+app.all('*', async (req, res) => {
+    try {
+        // Importa y ejecuta el archivo index.js generado por SvelteKit
+        const handler = await import(path.join(__dirname, 'build', 'index.js'));
+        return handler.createRequestHandler()(req, res);
+    } catch (err) {
+        console.error('Error al manejar la solicitud', err);
+        res.status(500).send('Error interno del servidor');
+    }
+});
+
+
+/*
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -44,9 +69,9 @@ app.get('/', (req, res) => {
 });
 */
 
-app.get('*', (req, res) => {
-    res.sendFile(path.join(buildDir, 'index.js'));
-});
+//app.get('*', (req, res) => {
+//    res.sendFile(path.join(buildDir, 'index.js'));
+//});
 
 db.connect(err => {
     if (err) {
