@@ -1,14 +1,17 @@
 import express from 'express';
-import { handler } from './build/handler.js';
+const { handler } = await import('./build/handler.js');
 import db from './db-connection.js';
 import 'dotenv/config';
 import cors from 'cors';
 import { fileURLToPath } from 'url';
 import path from 'path';
 
+
+
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+app.use(express.static('public'));
 
 // Habilitar CORS
 app.use(cors());
