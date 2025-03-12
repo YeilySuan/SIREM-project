@@ -2,10 +2,10 @@ import express from 'express';
 import db from './db-connection.js';
 import 'dotenv/config';//
 import cors from 'cors';
-//import { handler } from './build/handler.js';
+import { handler } from './build/handler.js';
 //import { goto } from '$app/navigation';
 //import { navigate } from 'svelte-routing';
-//import path from 'path';
+import path from 'path';
 import sirv from 'sirv';
 
 
@@ -16,11 +16,15 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
+// Servir archivos estáticos desde el directorio 'build' (generado por SvelteKit)
+const buildDir = path.join(__dirname, 'build');
+
+app.use(express.static(buildDir));
 //app.set("view engine", "ejs");
 // Sirve los archivos generados por SvelteKit
+
 app.use(sirv('static', { dev: true }));
-//app.use(handler);
-//app.use("/public", express.static(__dirname + "/public"));
+app.use(handler);
 
 // Ejemplo de CORS en un servidor (usando Express.js)
 app.use((req, res, next) => {
@@ -36,11 +40,11 @@ app.get('/', (req, res) => {
     //res.sendFile('index.html', { root: __dirname });     
 });
 */
-/*
-app.get('/login', (req, res) => {
-    res.sendFile('login.html', { root: __dirname });
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(buildDir, 'index.html'));
 });
-*/
+
 db.connect(err => {
     if (err) {
         console.error('Error al conectar a la base de datos:', err);
