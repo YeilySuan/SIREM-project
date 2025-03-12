@@ -1,5 +1,5 @@
 import express from 'express';
-const { handler } = await import('./build/handler.js');
+const { handler } = await import('../sirem-project/build/handler.js');
 import db from './db-connection.js';
 import 'dotenv/config';
 import cors from 'cors';
