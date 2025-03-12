@@ -2,13 +2,15 @@ import express from 'express';
 import db from './db-connection.js';
 import 'dotenv/config';//
 import cors from 'cors';
+import { fileURLToPath } from 'url';
 //import { handler } from './build/handler.js';
 //import { goto } from '$app/navigation';
 //import { navigate } from 'svelte-routing';
 import path from 'path';
 import sirv from 'sirv';
 
-
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const PORT = process.env.DB_PORT || 8080;
 const app = express();
