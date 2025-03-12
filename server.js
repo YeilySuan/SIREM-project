@@ -25,7 +25,7 @@ app.use(express.static(path.join(__dirname, 'static')));
 //app.use(handler);
 
 app.get('/', (req, res) => {
-    res.send('Hello World!');
+    res.sendFile('./src/app.html', { root: __dirname });
 });
 
 /*
