@@ -1,5 +1,5 @@
 import express from 'express';
-const { handler } = await import('../sirem-project/build/handler.js');
+const { handler } = await import('./build/handler.js');
 import db from './db-connection.js';
 import 'dotenv/config';
 import cors from 'cors';
@@ -7,7 +7,7 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 
 
-
+const PORT = process.env.DB_PORT || 8080;
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -24,9 +24,15 @@ app.use(express.static(path.join(__dirname, 'static')));
 // Ruta para manejar la solicitud de SvelteKit desde el build
 app.use(handler);
 
+app.get('/', (req, res) => {
+    res.send('Hello World!');
+});
+
+/*
 app.all('*', (req, res) => {
     res.status(404).send('Página no encontrada');
 });
+*/
 
 db.connect(err => {
     if (err) {
