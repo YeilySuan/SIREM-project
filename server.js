@@ -25,7 +25,8 @@ app.use(express.static(buildDir));
 //app.set("view engine", "ejs");
 // Sirve los archivos generados por SvelteKit
 
-app.use(sirv('static', { dev: true }));
+app.use(sirv(path.join(__dirname, '..', 'build'), { dev: true }));
+
 //app.use(handler);
 
 // Ejemplo de CORS en un servidor (usando Express.js)
@@ -44,7 +45,7 @@ app.get('/', (req, res) => {
 */
 
 app.get('*', (req, res) => {
-    res.sendFile(path.join(buildDir, 'index.html'));
+    res.sendFile(path.join(buildDir, 'index.js'));
 });
 
 db.connect(err => {
