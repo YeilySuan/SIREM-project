@@ -10,8 +10,8 @@
  // Función para leer el medicamento desde la base de datos
   async function getData() {
     if (!barCode) return;
-
-    let url = `http://siremproject.cleverapps.io/api/getMedicamentos/${barCode}`;
+     //esto es lo que cambie para leer en Railway DESPLIEGUE
+    let url = `http://sirem-project-production-e2cc.up.railway.app/api/getMedicamentos/${barCode}`;
 
     try {
       const response = await fetch(url);

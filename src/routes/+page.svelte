@@ -52,7 +52,8 @@
   async function logginSuccess(logginCedula, logginPassword) {
 
   try {
-    const response = await fetch('http://siremproject.cleverapps.io/api/validateLogginToMainMenu', {
+    //esto es lo que cambie para leer en Railway DESPLIEGUE
+    const response = await fetch('http://sirem-project-production-e2cc.up.railway.app/api/validateLogginToMainMenu', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

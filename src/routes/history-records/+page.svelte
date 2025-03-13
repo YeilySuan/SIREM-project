@@ -10,7 +10,8 @@ let error = null;
 // Función para obtener los datos del historial de creación
 async function getHistorialData() {
     try {
-      const response = await fetch("http://siremproject.cleverapps.io/api/getHistorialCreacionMedicamentos");
+      //esto es lo que cambie para leer en Railway / despliegue
+      const response = await fetch("http://sirem-project-production-e2cc.up.railway.app/api/getHistorialCreacionMedicamentos");
 
       if (!response.ok) {
         throw new Error("No se pudo obtener el historial de creación");
