@@ -13,7 +13,7 @@
     // Función para obtener los datos del historial de creación
     async function getInventoryReport() {
         try {
-          //esto es lo que cambie para leer en Railway / despliegue
+          //esto es lo que cambie para leer en Railway DESPLIEGUE
           const response = await fetch("http://sirem-project-production-e2cc.up.railway.app/api/getInventoryMedicamentos");
 
           if (!response.ok) {
