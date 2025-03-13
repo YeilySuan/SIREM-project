@@ -23,6 +23,10 @@ app.use(express.static(path.join(__dirname, 'static')));
 
 // Ruta para manejar la solicitud de SvelteKit desde el build
 app.use(handler);
+
+app.all('*', (req, res) => {
+    return handler(req, res);
+  });
 /*
 app.get('/', (req, res) => {
     res.sendFile('./src/app.html', { root: __dirname });
