@@ -14,7 +14,7 @@
     async function getInventoryReport() {
         try {
           //esto es lo que cambie para leer en Railway DESPLIEGUE
-          const response = await fetch("http://sirem-project-production-e2cc.up.railway.app/api/getInventoryMedicamentos");
+          const response = await fetch(`https://sirem-project-production-e2cc.up.railway.app/api/getInventoryMedicamentos`);
 
           if (!response.ok) {
             throw new Error("No se pudo obtener el historial de creación");

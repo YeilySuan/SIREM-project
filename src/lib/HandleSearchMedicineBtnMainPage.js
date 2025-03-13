@@ -1,7 +1,8 @@
 export async function getMedicineForBtnMainPage(barCode) {
  
   try {
-    const response = await fetch(`http://siremproject.cleverapps.io/api/getMedicineSearchButton?barCode=${barCode}`);
+    //esto lo cambie para el despliegue de Railway
+    const response = await fetch(`https://sirem-project-production-e2cc.up.railway.app/api/getMedicineSearchButton?barCode=${barCode}`);
 
     if (!response.ok) {
      const errorText = await response.text();

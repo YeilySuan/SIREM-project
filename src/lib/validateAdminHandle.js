@@ -5,7 +5,8 @@ export async function sendValidateAdmin(username, password) {
     password
   };
 
-  const response = await fetch('http://siremproject.cleverapps.io/api/validateAdmin', {
+  //esto lo cambien para el despliegue de Railway
+  const response = await fetch('https://sirem-project-production-e2cc.up.railway.app/api/validateAdmin', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

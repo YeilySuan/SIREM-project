@@ -11,8 +11,8 @@ export async function sendMedicineForm(barCode, name, dose, presentation, number
     dateExpiration,
     idUsuarioMed
    };
-  
-   const response = await fetch('http://siremproject.cleverapps.io/api/createMedicamentos', {
+  //esto lo cambie para el despliegue de Railway
+   const response = await fetch('https://sirem-project-production-e2cc.up.railway.app/api/createMedicamentos', {
     method:'POST',
     headers: {
       'Content-Type': 'application/json',
