@@ -11,7 +11,7 @@ const PORT = process.env.DB_PORT || 8080;
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-app.use(express.static('public'));
+app.use(express.static('static'));
 
 // Habilitar CORS
 app.use(cors());
@@ -23,12 +23,12 @@ app.use(express.static(path.join(__dirname, 'static')));
 
 // Ruta para manejar la solicitud de SvelteKit desde el build
 app.use(handler);
-/*
+
 app.all('*', (req, res) => {
     return handler(req, res);
 
   });
-*/
+
 /*
 app.get('/', (req, res) => {
     res.sendFile('./src/app.html', { root: __dirname });
