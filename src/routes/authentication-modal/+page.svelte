@@ -1,7 +1,7 @@
 <script>
 import { onDestroy } from "svelte";
 import { modalStore } from "../../stores/modal-store";
-import { sendValidateAdmin } from "../../lib/validateAdminHandle";
+import { sendValidateAdmin } from "../../lib/validateAdminHandle.js";
 import { createEventDispatcher } from 'svelte';
 
 

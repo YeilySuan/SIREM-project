@@ -1,6 +1,6 @@
 <script>
   import { onMount } from "svelte";
-  import { sendMedicineForm } from '../../lib/create-medicamentosHandler';
+  import { sendMedicineForm } from '../../lib/create-medicamentosHandler.js';
   
   let dialogGuardar;
   let barCode = '';

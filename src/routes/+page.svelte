@@ -2,8 +2,8 @@
   import { navigate } from "svelte-routing";
   import { goto } from '$app/navigation';
   import AuthenticationModal from "./authentication-modal/+page.svelte";
-  import { modalStore } from "../stores/modal-store";
-  import { sendForm } from '../lib/formHandler';
+  import { modalStore } from "../stores/modal-store.js";
+  import { sendForm } from '../lib/formHandler.js';
   import { createEventDispatcher } from 'svelte';
 
   let logginCedula = '';

@@ -26,6 +26,7 @@ app.use(handler);
 
 app.all('*', (req, res) => {
     return handler(req, res);
+
   });
 /*
 app.get('/', (req, res) => {
