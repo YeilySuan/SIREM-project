@@ -383,5 +383,6 @@
 </div>
 
 <div class="lower-strip">
-  <img class="logo" src="/src/lib/images/LogoSIREM.png" alt="logo SIREM">
+  <img class="logo" src="../../public/LogoSIREM.png" alt="logo SIREM">
 </div>
+
