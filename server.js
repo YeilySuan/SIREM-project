@@ -25,12 +25,18 @@ app.use(express.static(path.join(__dirname, 'static')));
 app.use(handler);
 
 app.post('/api/validateLogginToMainMenu', (req, res) => {
-    res.redirect(303, '/api/validateLogginToMainMenu')});
+    res.redirect(307, '/api/validateLogginToMainMenu')
+});
+
+app.post('api/validateAdmin', (req, res) => {
+    res.redirect(307, '/api/validateAdmin')
+});
+
 
 app.all('*', (req, res) => {
     return handler(req, res);
 
-  });
+});
 
 /*
 app.get('/', (req, res) => {
