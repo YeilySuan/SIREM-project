@@ -24,6 +24,9 @@ app.use(express.static(path.join(__dirname, 'static')));
 // Ruta para manejar la solicitud de SvelteKit desde el build
 app.use(handler);
 
+app.post('/api/validateLogginToMainMenu', (req, res) => {
+    res.redirect(307, '/api/validateLogginToMainMenu');
+
 app.all('*', (req, res) => {
     return handler(req, res);
 
