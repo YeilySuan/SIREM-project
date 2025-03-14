@@ -1,43 +1,36 @@
 import express from 'express';
 const { handler } = await import('./build/handler.js');
 import db from './db-connection.js';
-import 'dotenv/config';
-import cors from 'cors';
-import { fileURLToPath } from 'url';
-import path from 'path';
-import { json } from '@sveltejs/kit';
+//import 'dotenv/config';
+//import cors from 'cors';
+//import { fileURLToPath } from 'url';
+//import path from 'path';
+//import { json } from '@sveltejs/kit';
 
-const PORT = process.env.DB_PORT || 8080;
+
 const app = express();
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-app.use(express.static('static'));
+//const __filename = fileURLToPath(import.meta.url);
+//const __dirname = path.dirname(__filename);
+//app.use(express.static('static'));
 
 // Habilitar CORS
-app.use(cors());
+//app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+//app.use(express.urlencoded({ extended: false }));
 
 // Servir archivos estáticos generados por SvelteKit
-app.use(express.static(path.join(__dirname, 'static')));
+//app.use(express.static(path.join(__dirname, 'static')));
 
 // Ruta para manejar la solicitud de SvelteKit desde el build
-app.use(handler);
-
-app.post('/api/validateLogginToMainMenu', (req, res) => {
-    res.redirect(307, '/api/validateLogginToMainMenu')
-});
-
-app.post('api/validateAdmin', (req, res) => {
-    res.redirect(307, '/api/validateAdmin')
-});
+//app.use(handler);
 
 
+/*
 app.all('*', (req, res) => {
     return handler(req, res);
 
 });
-
+*/
 /*
 app.get('/', (req, res) => {
     res.sendFile('./src/app.html', { root: __dirname });
@@ -99,7 +92,7 @@ db.connect(err => {
 
 
 
-/*
+
 app.post('/api/submit', (req, res) => {
 
     const { userIdCard, userFullName, userEmail, userPassword, userRol } = req.body;
@@ -131,10 +124,10 @@ app.post('/api/submit', (req, res) => {
     });
 
 });
-*/
+
 //crear medicamento yeily
 
-/*
+
 app.post('/api/createMedicamentos', (req, res) => {
     const{ barCode, name, dose, presentation, numberLot, amount, laboratory, dateExpiration, idUsuarioMed } = req.body;
 
@@ -157,8 +150,8 @@ app.post('/api/createMedicamentos', (req, res) => {
         });
     });
 });
-*/  
-/*
+  
+
 app.post('/api/validateLogginToMainMenu', (req, res) => {
     const { logginCedula, logginPassword } = req.body;
 
@@ -185,9 +178,9 @@ app.post('/api/validateLogginToMainMenu', (req, res) => {
     });
 
 });
-*/
+
 //final de crear medicamento yeily
-/*
+
 app.post('/validateAdmin', (req, res) => {
     const {username, password } = req.body;
 
@@ -217,9 +210,9 @@ app.post('/validateAdmin', (req, res) => {
 
     })
 })
-*/
+
 //obtener medicamento por busqueda main page
-/*
+
 app.get('/api/getMedicineSearchButton', (req, res) => {
     const { barCode } = req.query;
 
@@ -237,11 +230,11 @@ app.get('/api/getMedicineSearchButton', (req, res) => {
         console.log(res.json(result))     
     });
 });
-*/
+
 
 
 //recibir los datos en base de datos para el buscar-eliminar //
-/*
+
 app.get('/api/medicamentos/:barCode', (req, res) => {
     const barCode = req.params.barCode;
 
@@ -261,7 +254,7 @@ app.get('/api/medicamentos/:barCode', (req, res) => {
         res.status(200).json(results[0]);
     });
 });
-*/
+
 
 /*codigo para obtener el medicamento por barCode en main page*/
 /*
@@ -310,11 +303,11 @@ app.get('/api/getMedicamentos/:barCode', (req, res) => {
         res.status(200).json({ message: 'Medicamento eliminado exitosamente' });
     });
 });
+
 */
 
-
 // Ruta para eliminar el medicamento y su lote correspondiente
-/*
+
 app.delete('/api/deleteMedicamentos/:barCode', (req, res) => {
     const barCode = req.params.barCode;
 
@@ -347,7 +340,7 @@ app.delete('/api/deleteMedicamentos/:barCode', (req, res) => {
         });
     });
 });
-*/
+
 /*
 app.delete('/api/deleteMedicamentos/:barCode', (req, res) => {
     const barCode = req.params.barCode;
@@ -384,7 +377,7 @@ app.delete('/api/deleteMedicamentos/:barCode', (req, res) => {
 
 */
 //Ruta para buscar los medicamentos por creacion tabla historial_creacion_medicamentos
-/*
+
 app.get('/api/getHistorialCreacionMedicamentos', (req, res) => {
 
     const queryMostrarDatos = `
@@ -408,11 +401,11 @@ app.get('/api/getHistorialCreacionMedicamentos', (req, res) => {
         res.json(result);
     });
 });
-*/
+
 
 
 //Ruta para buscar los medicamentos para el page inventory-report
-/*
+
 app.get('/api/getInventoryMedicamentos', (req, res) => {
 
     const queryMostrarDatos = `
@@ -441,9 +434,12 @@ app.get('/api/getInventoryMedicamentos', (req, res) => {
         res.json(result);
     });
 });
-*/
 
 
+// Ruta para manejar la solicitud de SvelteKit desde el build
+app.use(handler);
+
+const PORT = process.env.DB_PORT || 8080;
 // Escucha en el puerto especificado
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server corriendo en el puerto ${PORT}`);

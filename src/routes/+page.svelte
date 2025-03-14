@@ -49,37 +49,37 @@
     isActive = false;
   };
 
-  async function logginSuccess(logginCedula, logginPassword) {
-  try {
-    // Esto es lo que cambie para leer en Railway DESPLIEGUE
-    const response = await fetch('https://sirem-project-production-e2cc.up.railway.app/api/validateLogginToMainMenu', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ logginCedula, logginPassword })
-    });
+async function logginSuccess(logginCedula, logginPassword) {
+try {
+  // Esto es lo que cambie para leer en Railway DESPLIEGUE
+  const response = await fetch('https://sirem-project-production-e2cc.up.railway.app/api/validateLogginToMainMenu', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ logginCedula, logginPassword })
+  });
 
-    // Check if the response is OK
-    if (!response.ok) {
-      // Attempt to get the message, fallback to a default one
-      const errorData = await response.text();  // Get the raw response text (not JSON)
-      console.error('Server error:', errorData);
-      alert('Error desconocido o Usuario y contraseña incorrectos');
-      return;
-    }
-
-    // Try parsing JSON only if the response is OK
-    const data = await response.json();
-
-    if (data) {
-      goto('/main-page');  // Handle successful login
-    }
-
-  } catch (error) {
-    console.error('Hubo un problema con la solicitud:', error);
-    alert("Error al iniciar sesión");
+  // Check if the response is OK
+  if (!response.ok) {
+    // Attempt to get the message, fallback to a default one
+    const errorData = await response.text();  // Get the raw response text (not JSON)
+    console.error('Server error:', errorData);
+    alert('Error desconocido o Usuario y contraseña incorrectos');
+    return;
   }
+
+  // Try parsing JSON only if the response is OK
+  const data = await response.json();
+
+  if (data) {
+    goto('/main-page');  // Handle successful login
+  }
+
+} catch (error) {
+  console.error('Hubo un problema con la solicitud:', error);
+  alert("Error al iniciar sesión");
+}
 }
 
 
