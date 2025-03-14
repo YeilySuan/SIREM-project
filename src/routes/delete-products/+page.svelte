@@ -63,7 +63,7 @@ async function getData() {
 async function deleteMedicamento() {
     if (!barCode) return; 
 
-    let url = `https://sirem-project-production-e2cc.up.railway.app/api/deleteMedicamentos/${barCode}`;
+    let url = `b5sf2rby3y9yoblljx3e-mysql.services.clever-cloud.com:3306/api/deleteMedicamentos/${barCode}`;
     
     try {
         const response = await fetch(url, {

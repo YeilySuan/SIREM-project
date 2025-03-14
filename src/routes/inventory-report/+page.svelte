@@ -1,32 +1,38 @@
 <script>
+
   import { navigate } from "svelte-routing";
   
   function returnMenu() {
     console.log("regresando al menu principal");
-    navigate('/main-page');
+    navigate('/main-page')
   }
 
   let inventoryReport = [];
   let error = null;
 
-  // Función para obtener los datos del historial de creación
-  async function getInventoryReport() {
-    try {
-      const response = await fetch(`https://sirem-project-production-e2cc.up.railway.app/api/getInventoryMedicamentos`);
+    // Función para obtener los datos del historial de creación
+    async function getInventoryReport() {
+        try {
+          //esto es lo que cambie para leer en Railway DESPLIEGUE
+          const response = await fetch(`https://sirem-project-production-e2cc.up.railway.app/api/getInventoryMedicamentos`);
 
-      if (!response.ok) {
-        throw new Error("No se pudo obtener el historial de creación");
+          if (!response.ok) {
+            throw new Error("No se pudo obtener el historial de creación");
+          }
+
+          inventoryReport = await response.json();
+          console.log("Datos recibidos:", inventoryReport);  // Verifica aquí
+          error = null;
+        } catch (err) {
+          error = err.message;
+          inventoryReport = [];
+          alert("Error al obtener la informacion del inventario.");
+        }
       }
 
-      inventoryReport = await response.json();
-      console.log("Datos recibidos:", inventoryReport);
-      error = null;
-    } catch (err) {
-      error = err.message;
-      inventoryReport = [];
-    }
-  }
-</script>
+
+  </script>
+
 
 <div>
   <div class="background"></div>
@@ -34,50 +40,56 @@
   <form class="main-form">
     <h1>BALANCE DE INVENTARIO</h1>
 
-    <div class="form-group full-width">
-      <button on:click={getInventoryReport} class="buscar-btn" id="buscar-btn">REPORTE DE INVENTARIO</button>
-    </div>
+  <div class="form-group full-width">
+  <button on:click={getInventoryReport} class="buscar-btn" id="buscar-btn">REPORTE DE INVENTARIO</button>
+  </div>
 
-    {#if inventoryReport.length > 0}
-      <table>
-        <thead>
-          <tr>
-            <th>Codigo de Barras</th>
-            <th>Nombre</th>
-            <th>Dosis</th>
-            <th>Presentacion</th>
-            <th>Numero de Lote</th>
-            <th>Cantidad</th>
-            <th>Laboratorio</th>
-            <th>Fecha de Vencimiento</th>
-          </tr>
-        </thead>
-        <tbody>
-          {#each inventoryReport as item}
-            <tr>
-              <td>{item.Codigo_barras ? item.Codigo_barras.slice() : ''}</td>
-              <td>{item.Nombre ? item.Nombre.slice() : ''}</td>
-              <td>{item.Dosis ? item.Dosis.slice() : ''}</td>
-              <td>{item.Presentacion ? item.Presentacion.slice() : ''}</td>
-              <td>{item.Numero_lote ? item.Numero_lote.slice() : ''}</td>
-              <td>{item.Cantidad}</td>
-              <td>{item.Laboratorio ? item.Laboratorio.slice() : ''}</td>
-              <td>{item.Fecha_vencimiento ? item.Fecha_vencimiento.slice(0, 10) : ''}</td>
-            </tr>
-          {/each}
-        </tbody>
-      </table>
-    {:else if error}
-      <p>{error}</p>
-    {/if}
 
-    <div>
-      <button on:click={returnMenu} class="exit-btn">REGRESAR A MENU PRINCIPAL</button>
-    </div>
+
+{#if inventoryReport.length > 0}
+  <table>
+    <thead>
+      <tr>
+        <th>Codigo de Barras</th>
+        <th>Nombre</th>
+        <th>Dosis</th>
+        <th>Presentacion</th>
+        <th>Numero de Lote</th>
+        <th>Cantidad</th>
+        <th>Laboratorio</th>
+        <th>Fecha de Vencimiento</th>
+      </tr>
+    </thead>
+    <tbody>
+      {#each inventoryReport as item}
+        <tr>
+          <td>{item.Codigo_barras ? item.Codigo_barras.slice() : ''}</td>
+          <td>{item.Nombre ? item.Nombre.slice() : ''}</td>
+          <td>{item.Dosis ? item.Dosis.slice() : ''}</td>
+          <td>{item.Presentacion ? item.Presentacion.slice() : ''}</td>
+          <td>{item.Numero_lote ? item.Numero_lote.slice() : ''}</td>
+          <td>{item.Cantidad}</td>
+          <td>{item.Laboratorio ? item.Laboratorio.slice() : ''}</td>
+          <td>{item.Fecha_vencimiento ? item.Fecha_vencimiento.slice(0, 10) : ''}</td>
+        </tr>
+      {/each}
+    </tbody>
+  </table>
+{:else if error}
+  <p>{error}</p>
+{/if}
+
+    
+  <div>
+    <button on:click={returnMenu} class="exit-btn">REGRESAR A MENU PRINCIPAL</button>
+  </div>
   </form>
 </div>
 
+
+
 <style>
+
 /*css del fondo (imagen de pastillas) */
 .background::before {
   content: '' ;
@@ -93,6 +105,8 @@
   opacity: 0.5;
   z-index: -1;
 }
+
+
 
 /*css del titulo*/
 h1{
@@ -178,4 +192,8 @@ table tr:nth-child(even) {
     display: flex;
     flex-direction: column;
   }
+
+
+
+
 </style>
