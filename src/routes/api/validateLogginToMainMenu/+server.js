@@ -1,5 +1,5 @@
 // src/routes/api/validateLogginToMainMenu.js
-import { db } from '../../lib/database'; // Ruta relativa a la base de datos
+import { db } from '../../../lib/database'; // Ruta relativa a la base de datos
 import { json } from '@sveltejs/kit';
 
 export async function POST({ request }) {
