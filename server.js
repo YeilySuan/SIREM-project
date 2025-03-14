@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Servir archivos estáticos generados por SvelteKit
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'static')));
 
 // Ruta para manejar la solicitud de SvelteKit desde el build
 app.use(handler);
