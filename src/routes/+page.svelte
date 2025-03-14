@@ -8,12 +8,12 @@
 
   let logginCedula = '';
   let logginPassword = '';
-  let errorMessageUP = '';
   let userIdCard = '';
   let userFullName = '';
   let userEmail = '';
   let userPassword = '';
   let userRol = '';
+  let errorMessage = '';
 
   const handleSubmit = async () => {
     try {
@@ -65,8 +65,8 @@
     
     
     if (!response.ok) {      
-      errorMessageUP = data.message || 'Error desconocido o Usuario y contraseña incorrectos';
-      alert(errorMessageUP)
+      errorMessage = data.message || 'Error desconocido o Usuario y contraseña incorrectos';
+      alert(errorMessage)
       return; 
     } else {      
       goto('/main-page');
@@ -75,8 +75,7 @@
   } catch (error) {
    
     console.error('Hubo un problema con la solicitud:', error);
-   
-    errorMessage = 'Hubo un problema con la conexión o con el servidor. Intenta nuevamente.';
+    alert("Error al iniciar sesion");
   }
 }
 
