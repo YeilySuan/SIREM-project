@@ -1,10 +1,10 @@
 <script>
-  import { navigate } from "svelte-routing";
+  //import { navigate } from "svelte-routing";
   import { goto } from '$app/navigation';
   import AuthenticationModal from "./authentication-modal/+page.svelte";
   import { modalStore } from "../stores/modal-store.js";
   import { sendForm } from '../lib/formHandler.js';
-  import { createEventDispatcher } from 'svelte';
+  //import { createEventDispatcher } from 'svelte';
 
   let logginCedula = '';
   let logginPassword = '';
@@ -52,7 +52,7 @@
   async function logginSuccess(logginCedula, logginPassword) {
   try {
     // Esto es lo que cambie para leer en Railway DESPLIEGUE
-    const response = await fetch('https://sirem-project-production-e2cc.up.railway.app/api/validateLogginToMainMenu', {
+    const response = await fetch('/validateLogginToMainMenu', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -386,6 +386,6 @@
 </div>
 
 <div class="lower-strip">
-  <img class="logo" src="/public/LogoSIREM.png" alt="logo SIREM">
+  <img class="logo" src="/logo-sirem.png" alt="logo SIREM">
 </div>
 
