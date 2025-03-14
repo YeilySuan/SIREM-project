@@ -1,5 +1,5 @@
 import express from 'express';
-const { handler } = await import('./build/handler.js');
+//const { handler } = await import('./build/handler.js');
 import db from './db-connection.js';
 import 'dotenv/config';
 import cors from 'cors';
@@ -22,12 +22,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'static')));
 
 // Ruta para manejar la solicitud de SvelteKit desde el build
-app.use(handler);
-
+//app.use(handler);
+/*
 app.all('*', (req, res) => {
     return handler(req, res);
 
   });
+  */
 /*
 app.get('/', (req, res) => {
     res.sendFile('./src/app.html', { root: __dirname });
