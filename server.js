@@ -1,10 +1,11 @@
 import express from 'express';
-//const { handler } = await import('./build/handler.js');
+const { handler } = await import('./build/handler.js');
 import db from './db-connection.js';
 import 'dotenv/config';
 import cors from 'cors';
 import { fileURLToPath } from 'url';
 import path from 'path';
+import { json } from '@sveltejs/kit';
 
 
 const PORT = process.env.DB_PORT || 8080;
@@ -22,13 +23,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'static')));
 
 // Ruta para manejar la solicitud de SvelteKit desde el build
-//app.use(handler);
+app.use(handler);
 /*
 app.all('*', (req, res) => {
     return handler(req, res);
 
   });
-  */
+*/
 /*
 app.get('/', (req, res) => {
     res.sendFile('./src/app.html', { root: __dirname });
@@ -86,6 +87,46 @@ db.connect(err => {
         }
     });
 })();
+
+async function POST({ request }) {
+    try {
+      const { logginCedula, logginPassword } = await request.json();
+  
+      // Consulta para validar usuario
+      const validateUserAndPass = 'SELECT * FROM usuarios WHERE Cedula = ?';
+      const [results] = await db.query(validateUserAndPass, [logginCedula]);
+  
+      if (results.length === 0) {
+        return json(
+          { message: 'Usuario no encontrado' },
+          { status: 401 }
+        );
+      }
+  
+      const user = results[0];
+  
+      // Validar si la contraseña coincide
+      if (user.Contraseña === logginPassword) {
+        return json(
+          { message: 'Autenticacion Exitosa' },
+          { status: 200 }
+        );
+      } else {
+        return json(
+          { message: 'Usuario o contraseña Incorrectas' },
+          { status: 401 }
+        );
+      }
+    } catch (err) {
+      console.error(err);
+      return json(
+        { message: 'Error en el servidor' },
+        { status: 500 }
+      );
+    }
+  }
+
+
 /*
 app.post('/api/submit', (req, res) => {
 

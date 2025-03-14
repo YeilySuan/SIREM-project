@@ -12,7 +12,7 @@ set "randomStr="
 
 :: Generar 4 letras aleatorias utilizando la fecha, hora, minuto, segundo y un valor aleatorio
 for /L %%i in (1,1,4) do (
-    set /a "rand=!today:~%%i,1! + !today:~%%i+1,1! + !today:~%%i+2,1! + !random! + !time:~6,2! %% 26"
+    set /a rand=!random! + !time:~6,2! + !today:~%%i,1! + !today:~%%i+1,1! %% 26
     set "randomStr=!randomStr!!letters:~%rand%,1!"
 )
 
@@ -25,6 +25,7 @@ git commit -m "%commitMessage%"
 git push origin main
 
 endlocal
+
 
 
 
