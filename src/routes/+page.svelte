@@ -359,7 +359,7 @@
           <span>Use cedula y contraseña</span>
           <input type="text" placeholder="Cedula" bind:value={logginCedula} required>
           <input type="password" placeholder="Contraseña" bind:value={logginPassword} required>
-          <button on:click={logginSuccess(logginCedula, logginPassword)} preventDefault>Ingresar</button>
+          <button on:click={logginSuccess(logginCedula, logginPassword)} >Ingresar</button>
       </form>
   </div>
   <div class="toggle-container">
