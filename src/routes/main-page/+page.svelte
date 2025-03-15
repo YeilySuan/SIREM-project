@@ -67,11 +67,13 @@ const goToHistoryRecords = () =>{
 
 let dialog;
 
-function abrirDialogo(){
+function abrirDialogo(event){
+    event.preventDefault();
     dialog.showModal();
 }
 
-function cerrarDialogo(){
+function cerrarDialogo(event){
+    event.preventDefault();
     dialog.close();
 }
  
@@ -86,7 +88,7 @@ let inventoryReport = [];
 //Función para obtener los datos del historial de creación
 async function getInventoryReport() {
   try {
-      const response = await fetch("http://localhost:3000/api/getInventoryMedicamentos");
+      const response = await fetch("https://sirem-project-production-e2cc.up.railway.app/api/getInventoryMedicamentos");
 
       if (!response.ok) {
         throw new Error("No se pudo obtener el historial de creación");
@@ -123,12 +125,12 @@ function getRowColor(fechaVencimiento) {
 <div class="container">    
   <header>
       <div class="header-left" >
-          <img src="/src/lib/images/LogoSIREM.png" alt="SIREM Logo" class="logo">
+          <img src="/LogoSIREM.png" alt="SIREM Logo" class="logo">
           <h1>Sistema de Información Registro y Notificación de Vencimiento de Medicamentos - SIREM </h1>
       </div>
       <div class="header-right">
           <p>Yeily Ortiz Angarita</p>
-          <button on:click={abrirDialogo} preventDefault class="logout">Cerrar Sesión</button>
+          <button on:click={abrirDialogo} class="logout">Cerrar Sesión</button>
       </div>
   </header>
 
