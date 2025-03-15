@@ -180,7 +180,7 @@ app.post('/api/validateLogginToMainMenu', (req, res) => {
 
 //final de crear medicamento yeily
 
-app.post('/validateAdmin', (req, res) => {
+app.post('/api/validateAdmin', (req, res) => {
     const {username, password } = req.body;
 
     const validateAdminQuery = `SELECT u.*, r.Tipo_rol
