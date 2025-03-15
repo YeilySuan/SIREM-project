@@ -176,7 +176,6 @@ app.post('/api/validateLogginToMainMenu', (req, res) => {
         }
 
     });
-
 });
 
 //final de crear medicamento yeily
@@ -206,10 +205,8 @@ app.post('/validateAdmin', (req, res) => {
         } else {
             return res.status(401).json({ message: 'Contraseña incorrecta' });
         }
-
-
-    })
-})
+    });
+});
 
 //obtener medicamento por busqueda main page
 
@@ -257,7 +254,7 @@ app.get('/api/medicamentos/:barCode', (req, res) => {
 
 
 /*codigo para obtener el medicamento por barCode en main page*/
-/*
+
 app.get('/api/getMedicamentos/:barCode', (req, res) => {
 
     const barCode = req.params.barCode;
@@ -285,7 +282,7 @@ app.get('/api/getMedicamentos/:barCode', (req, res) => {
         res.json(result);
     });
 });
-*/
+
 /*
     const deleteQuery = 'DELETE FROM medicamentos WHERE Id_medicamento = ?';
 
