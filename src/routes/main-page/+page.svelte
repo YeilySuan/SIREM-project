@@ -77,7 +77,8 @@ function cerrarDialogo(event){
     dialog.close();
 }
  
-function closeSesion() {
+function closeSesion(event) {
+    event.preventDefault();
     goto('/')
     cerrarDialogo();
   }
@@ -125,7 +126,7 @@ function getRowColor(fechaVencimiento) {
 <div class="container">    
   <header>
       <div class="header-left" >
-          <img src="/LogoSIREM.png" alt="SIREM Logo" class="logo">
+          <img src="/logo-sirem.png" alt="SIREM Logo" class="logo">
           <h1>Sistema de Información Registro y Notificación de Vencimiento de Medicamentos - SIREM </h1>
       </div>
       <div class="header-right">
