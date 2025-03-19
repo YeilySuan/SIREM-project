@@ -147,12 +147,10 @@ async function updateMedicamento() {
   <dialog bind:this={dialog}>
    <form class="dialog" method="dialog">
     <p>¿Está seguro de querer actualizar este registro de forma permanente?</p>
-    <div class="dialog-buttons">
     <button type="submit" id="button-cancelar" on:click={cerrarDialogo}>CANCELAR</button>
     <button type="submit" id="button-actualizar" on:click={updateMedicamento}  class="update-btn" >ACTUALIZAR</button>  
   </form>
 </dialog>
-</div>
 </div>
 
   <div class="form-group full-width">
@@ -165,6 +163,8 @@ async function updateMedicamento() {
   </div>
 </form>
 
+
+</div>
 
 
 
@@ -210,6 +210,30 @@ async function updateMedicamento() {
     display: flex;
     flex-direction: column;
   }
+
+
+
+
+
+
+
+
+
+
+
+
+  
+ /*css del titulo actualizar medicamento*/
+  h1{
+    grid-column: span 2;
+    text-align: center;
+    background-color: #2c82a4a6; 
+    color: white;
+    padding: 10px;
+    border-radius: 30px;
+    font-size: 2.6rem;
+}
+
 /*CSS DEL MODAL */
   /*css del form del dialogo*/
   dialog p{
@@ -219,32 +243,15 @@ async function updateMedicamento() {
 }
 
 dialog form{
-    background-color: #f5f5dc;
-    border: 1px solid #ccc;
-    display: flex;
-    flex-direction: column;
-    align-items: center;  
+    background-color: beige;
+    display: block;
     width: 500px;
-    padding: 30px;
+    padding: 50px;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-.dialog-buttons {
-    display: flex;
-    justify-content: space-evenly;
-    width: 100%;
-    margin-top: 20px;
-}
-
-#button-cancelar, #button-actualizar {
-    flex: 1;
-    margin: 0 10px;
-    text-align: center;
+    backdrop-filter: drop
 }
 
 dialog::backdrop {
@@ -275,18 +282,6 @@ dialog::backdrop {
   cursor: pointer;
   margin-left: 150px;
 }
-
- /*css del titulo actualizar medicamento*/
-  h1{
-    grid-column: span 2;
-    text-align: center;
-    background-color: #2c82a4a6; 
-    color: white;
-    padding: 10px;
-    border-radius: 30px;
-    font-size: 2.6rem;
-}
-
 
 
 /*css de los input*/
@@ -333,6 +328,7 @@ input{
   position: absolute;
   bottom: 15%;
 }
+
 
 .exit-btn:hover{
   background-color: rgb(21, 73, 133);
