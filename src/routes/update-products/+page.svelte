@@ -269,16 +269,18 @@ dialog::backdrop {
 }
 
 
-#button-actualizar{
-  background-color:red;
-  color: white;
-  font-weight: bold;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-left: 150px;
+.update-btn {
+  background-color: #2c82a4 !important;
+  color: white !important;
+  font-weight: bold !important;
+  border: none !important;
+  padding: 10px 20px !important;
+  border-radius: 5px !important;
+  cursor: pointer !important;
+  display: block !important;
+  margin: 0 auto !important;
 }
+
 
 /*css de los input*/
 input{
