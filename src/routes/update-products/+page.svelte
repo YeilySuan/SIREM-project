@@ -1,66 +1,140 @@
 <script>
- 
 
 function returnMenu() {
   window.location.href = "/main-page";
 };
 
+let barCode = "";
+let error = null;
+let data = [];
+let fechaVencimiento = "";
+let nombre = "";
+let dosis = "";
+let presentacion = "";
+let numeroLote = "";
+let cantidad = "";
+let laboratorio = "";
+
+// Función para obtener datos del medicamento
+async function getData() {
+    if (!barCode) return;
+    
+    let url = `https://sirem-project-production-e2cc.up.railway.app/api/getMedicamentos/${barCode}`;
+
+    try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error("No se pudo obtener el medicamento");
+
+        data = await response.json();
+        error = null;
+
+        if (data.length > 0) {
+            fechaVencimiento = data[0].Fecha_vencimiento.slice(0, 10);
+            nombre = data[0].Nombre;
+            dosis = data[0].Dosis;
+            presentacion = data[0].Presentacion;
+            numeroLote = data[0].Numero_lote;
+            cantidad = data[0].Cantidad;
+            laboratorio = data[0].Laboratorio;
+        }
+    } catch (err) {
+        error = err.message;
+        data = [];
+    }
+}
+
+// Función para actualizar el medicamento
+async function updateMedicamento() {
+    if (!barCode) return;
+
+    let url = `https://sirem-project-production-e2cc.up.railway.app/api/updateMedicamento/${barCode}`;
+
+    let medicamentoActualizado = {
+        nombre,
+        presentacion,
+        dosis,
+        numeroLote,
+        cantidad,
+        fechaVencimiento,
+        laboratorio
+    };
+
+    try {
+        const response = await fetch(url, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(medicamentoActualizado)
+        });
+
+        if (!response.ok) throw new Error("No se pudo actualizar el medicamento");
+
+        alert("Medicamento actualizado correctamente");
+        window.location.href = "/update-products";
+    } catch (err) {
+        alert("Error al actualizar el medicamento: " + err.message);
+    }
+}
+
+
 </script>
+
+
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 <div class="background"></div>
+
 <div class="update-products">
   <form class="main-form">
-    <h1>MODIFICAR MEDICAMENTO</h1>
+    <h1>ACTUALIZAR MEDICAMENTO</h1>
 
 <div class="form-group">
     <label for="codigo-barras">Código de Barras</label>
-    <input type="text" id="codigo-barras">
+    <input type="text" id="codigo-barras" bind:value={barCode} required />
 </div>
 
-
-<button class="buscar-btn">
+/
+<button on:click={getData} type="submit" class="buscar-btn">
   <i class="fas fa-search"></i> Buscar
 </button>
 
 <div class="form-group">
   <label for="name">Nombre</label>
-  <input type="text">
+  <input type="text" bind:value={nombre}>
 </div>
 
 <div class="form-group">
   <label for="dose">Dosis</label>
-   <input type="text">
+   <input type="text" bind:value={dosis}>
  </div>
 
  <div class="form-group">
   <label for="presentation">Presentación</label>
-   <input type="text">
+   <input type="text" bind:value={presentacion}>
  </div>
 
 
  <div class="form-group">
   <label for="lot">Lote</label>
-  <input type="text">
+  <input type="text" bind:value={numeroLote}>
 </div>
 
 <div class="form-group">
   <label for="expiration date">Fecha de Vencimiento</label>
-  <input type="date">
+  <input type="date" bind:value={fechaVencimiento}>
 </div>
 
 <div class="form-group">
   <label for="amount">Cantidad</label>
-  <input type="text">
+  <input type="text" bind:value={cantidad}>
 </div>
 
 <div class="form-group">
   <label for="laboratory">Laboratorio</label>
-  <input type="text">
+  <input type="text" bind:value={laboratorio}>
 </div>
 
 <div class="form-group full-width">
-<button class="update-btn">ACTUALIZAR MEDICAMENTO</button>
+<button on:click={updateMedicamento} class="update-btn">ACTUALIZAR MEDICAMENTO</button>
 </div>
 
 </form>

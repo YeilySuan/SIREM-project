@@ -12,7 +12,6 @@ let numeroLote = "";
 let cantidad = "";
 let laboratorio = "";
 
-
 //funcion para retornar al main page//
 function returnMenu() {
   window.location.href = "/main-page";

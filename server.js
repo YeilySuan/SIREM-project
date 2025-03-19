@@ -224,6 +224,50 @@ app.delete('/api/deleteMedicamentos/:barCode', (req, res) => {
     });
 });
 
+//API PARA UPDATE
+
+app.put('/api/updateMedicamento/:barCode', (req, res) => {
+    const barCode = req.params.barCode;
+    const { nombre, presentacion, dosis, numeroLote, cantidad, fechaVencimiento, laboratorio } = req.body;
+
+    // Consulta para actualizar el medicamento
+    const queryActualizarMedicamento = `
+        UPDATE medicamentos 
+        SET Nombre = ?, Presentacion = ?, Dosis = ? 
+        WHERE Codigo_barras = ?`;
+
+    db.query(queryActualizarMedicamento, [nombre, presentacion, dosis, barCode], (err) => {
+        if (err) {
+            console.error('Error al actualizar el medicamento:', err);
+            return res.status(500).send('Error al actualizar el medicamento');
+        }
+
+        // Consulta para actualizar el lote
+        const queryActualizarLote = `
+            UPDATE lotes 
+            SET Numero_lote = ?, Cantidad = ?, Fecha_vencimiento = ?, Laboratorio = ?
+            WHERE Id_Medicamento = (SELECT Id_medicamento FROM medicamentos WHERE Codigo_barras = ?)`;
+
+        db.query(queryActualizarLote, [numeroLote, cantidad, fechaVencimiento, laboratorio, barCode], (err) => {
+            if (err) {
+                console.error('Error al actualizar el lote:', err);
+                return res.status(500).send('Error al actualizar el lote');
+            }
+            res.status(200).send('Medicamento y lote actualizados correctamente');
+        });
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
 app.get('/api/getHistorialCreacionMedicamentos', (req, res) => {
     const queryMostrarDatos = `
         SELECT 
