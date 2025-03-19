@@ -148,22 +148,13 @@ async function updateMedicamento() {
    <form class="dialog" method="dialog">
     <p>¿Está seguro de querer actualizar este registro de forma permanente?</p>
     <button type="submit" id="button-cancelar" on:click={cerrarDialogo}>CANCELAR</button>
-    <button on:click={updateMedicamento} id="button-actualizar" class="update-btn" >ACTUALIZAR</button>  
+    <button type="submit" id="button-actualizar" on:click={updateMedicamento}  class="update-btn" >ACTUALIZAR</button>  
   </form>
 </dialog>
 </div>
-
-
   <div class="form-group full-width">
   <button on:click={abrirDialogo} class="update-btn">ACTUALIZAR MEDICAMENTO</button>
   </div>
-
-
- <!---- 
-<div class="form-group full-width">
-<button on:click={updateMedicamento} class="update-btn">ACTUALIZAR MEDICAMENTO</button>
-</div>
--->
 
 <form class="form-btn-back">
   <div class="form-group full-width btn-back">
