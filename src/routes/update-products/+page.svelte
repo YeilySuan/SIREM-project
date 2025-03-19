@@ -269,15 +269,14 @@ dialog::backdrop {
 }
 
 #button-actualizar{
-  background-color: red ;
-  color: white ;
-  font-weight: bold ;
-  border: none ;
-  padding: 10px 20px ;
-  border-radius: 5px ;
+  background-color:red;
+  color: white;
+  font-weight: bold;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
   cursor: pointer;
-  display: block ;
-  margin: 0 auto ;
+  margin-left: 150px;
 }
 
 
