@@ -148,7 +148,7 @@ async function updateMedicamento() {
    <form class="dialog" method="dialog">
     <p>¿Está seguro de querer actualizar este registro de forma permanente?</p>
     <button type="submit" id="button-cancelar" on:click={cerrarDialogo}>CANCELAR</button>
-    <button on:click={updateMedicamento} id="button-actualizar" class="update-btn" >ACTUALIZAR MEDICAMENTO</button>  
+    <button on:click={updateMedicamento} id="button-actualizar" class="update-btn" >ACTUALIZAR</button>  
   </form>
 </dialog>
 </div>
@@ -267,7 +267,6 @@ dialog::backdrop {
   cursor: pointer;
   margin-left: 50px;
 }
-
 
 #button-actualizar{
   background-color: red ;
