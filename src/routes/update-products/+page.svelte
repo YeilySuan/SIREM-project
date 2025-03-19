@@ -147,10 +147,12 @@ async function updateMedicamento() {
   <dialog bind:this={dialog}>
    <form class="dialog" method="dialog">
     <p>¿Está seguro de querer actualizar este registro de forma permanente?</p>
+    <div class="dialog-buttons">
     <button type="submit" id="button-cancelar" on:click={cerrarDialogo}>CANCELAR</button>
     <button type="submit" id="button-actualizar" on:click={updateMedicamento}  class="update-btn" >ACTUALIZAR</button>  
   </form>
 </dialog>
+</div>
 </div>
 
   <div class="form-group full-width">
@@ -163,8 +165,6 @@ async function updateMedicamento() {
   </div>
 </form>
 
-
-</div>
 
 
 
@@ -219,15 +219,32 @@ async function updateMedicamento() {
 }
 
 dialog form{
-    background-color: beige;
-    display: block;
+    background-color: #f5f5dc;
+    border: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+    align-items: center;  
     width: 500px;
-    padding: 50px;
+    padding: 30px;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    backdrop-filter: drop
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.dialog-buttons {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    margin-top: 20px;
+}
+
+#button-cancelar, #button-actualizar {
+    flex: 1;
+    margin: 0 10px;
+    text-align: center;
 }
 
 dialog::backdrop {
