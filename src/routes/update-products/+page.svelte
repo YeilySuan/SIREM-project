@@ -270,7 +270,7 @@ dialog::backdrop {
 
 
 #button-actualizar{
-  background-color: #2c82a4 ;
+  background-color: red ;
   color: white ;
   font-weight: bold ;
   border: none ;
