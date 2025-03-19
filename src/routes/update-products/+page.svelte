@@ -152,6 +152,7 @@ async function updateMedicamento() {
   </form>
 </dialog>
 </div>
+
   <div class="form-group full-width">
   <button on:click={abrirDialogo} class="update-btn">ACTUALIZAR MEDICAMENTO</button>
   </div>
@@ -209,18 +210,6 @@ async function updateMedicamento() {
     display: flex;
     flex-direction: column;
   }
-
- /*css del titulo actualizar medicamento*/
-  h1{
-    grid-column: span 2;
-    text-align: center;
-    background-color: #2c82a4a6; 
-    color: white;
-    padding: 10px;
-    border-radius: 30px;
-    font-size: 2.6rem;
-}
-
 /*CSS DEL MODAL */
   /*css del form del dialogo*/
   dialog p{
@@ -270,6 +259,18 @@ dialog::backdrop {
   margin-left: 150px;
 }
 
+ /*css del titulo actualizar medicamento*/
+  h1{
+    grid-column: span 2;
+    text-align: center;
+    background-color: #2c82a4a6; 
+    color: white;
+    padding: 10px;
+    border-radius: 30px;
+    font-size: 2.6rem;
+}
+
+
 
 /*css de los input*/
 input{
@@ -315,7 +316,6 @@ input{
   position: absolute;
   bottom: 15%;
 }
-
 
 .exit-btn:hover{
   background-color: rgb(21, 73, 133);
