@@ -148,7 +148,7 @@ async function updateMedicamento() {
    <form class="dialog" method="dialog">
     <p>¿Está seguro de querer actualizar este registro de forma permanente?</p>
     <button type="submit" id="button-cancelar" on:click={cerrarDialogo}>CANCELAR</button>
-    <button on:click={updateMedicamento} class="update-btn" >ACTUALIZAR MEDICAMENTO</button>  <!----esto debe modificarse para eliminar de database    -->
+    <button on:click={updateMedicamento} class="update-btn" >ACTUALIZAR MEDICAMENTO</button>  
   </form>
 </dialog>
 </div>
@@ -228,6 +228,56 @@ async function updateMedicamento() {
     padding: 10px;
     border-radius: 30px;
     font-size: 2.6rem;
+}
+
+/*CSS DEL MODAL */
+  /*css del form del dialogo*/
+  dialog p{
+    text-align: center;
+    padding: 20px;
+    font-weight: bold;
+}
+
+dialog form{
+    background-color: beige;
+    display: block;
+    width: 500px;
+    padding: 50px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    backdrop-filter: drop
+}
+
+dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.5); 
+    filter: blur(5px);
+    transition: background-color 0.3s ease, filter 0.3s ease; 
+}
+
+/*css de los botones del modal de salir*/
+#button-cancelar{
+  background-color: #2c82a4;
+  color: white;
+  font-weight: bold;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 50px;
+}
+
+
+#button-actualizar{
+  background-color:red;
+  color: white;
+  font-weight: bold;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 150px;
 }
 
 /*css de los input*/

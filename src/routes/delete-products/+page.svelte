@@ -225,6 +225,7 @@ async function deleteMedicamento() {
     flex-direction: column;
   }
 
+/*CSS DEL MODAL */
   /*css del form del dialogo*/
   dialog p{
     text-align: center;
