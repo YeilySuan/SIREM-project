@@ -87,11 +87,10 @@ async function updateMedicamento() {
   <form class="main-form">
     <h1>ACTUALIZAR MEDICAMENTO</h1>
 
-<div class="form-group">
-    <label for="codigo-barras">Código de Barras</label>
-    <input type="text" id="codigo-barras" bind:value={barCode} required />
-</div>
-
+    <div class="form-group">
+      <label for="codigo-barras">Código de Barras</label>
+      <input type="text" id="codigo-barras" bind:value={barCode} required />
+  </div>
 /
 <button on:click={getData} type="submit" class="buscar-btn">
   <i class="fas fa-search"></i> Buscar
