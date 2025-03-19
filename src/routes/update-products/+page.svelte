@@ -1,8 +1,17 @@
 <script>
-
 function returnMenu() {
   window.location.href = "/main-page";
 };
+
+let dialog;
+//funciones para el modal de eliminar medicamento//
+function abrirDialogo(){
+    dialog.showModal();
+}
+
+function cerrarDialogo(){
+    dialog.close();
+}
 
 let barCode = "";
 let error = null;
@@ -92,7 +101,7 @@ async function updateMedicamento() {
       <input type="text" id="codigo-barras" bind:value={barCode} required />
   </div>
 
-  
+
 <button on:click={getData} type="submit" class="buscar-btn">
   <i class="fas fa-search"></i> Buscar
 </button>
@@ -133,11 +142,28 @@ async function updateMedicamento() {
   <input type="text" bind:value={laboratorio}>
 </div>
 
+ <!---- este es el boton de actualizar medicamento y el modal para confirmar actualizar -->
+ <div class="show-modal">
+  <dialog bind:this={dialog}>
+   <form class="dialog" method="dialog">
+    <p>¿Está seguro de querer actualizar este registro de forma permanente?</p>
+    <button type="submit" id="button-cancelar" on:click={cerrarDialogo}>CANCELAR</button>
+    <button on:click={updateMedicamento} class="update-btn" >ACTUALIZAR MEDICAMENTO</button>  <!----esto debe modificarse para eliminar de database    -->
+  </form>
+</dialog>
+</div>
+
+
+  <div class="form-group full-width">
+  <button on:click={abrirDialogo} class="update-btn">ACTUALIZAR MEDICAMENTO</button>
+  </div>
+
+
+ <!---- 
 <div class="form-group full-width">
 <button on:click={updateMedicamento} class="update-btn">ACTUALIZAR MEDICAMENTO</button>
 </div>
-
-</form>
+-->
 
 <form class="form-btn-back">
   <div class="form-group full-width btn-back">
