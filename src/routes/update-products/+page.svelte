@@ -148,7 +148,7 @@ async function updateMedicamento() {
    <form class="dialog" method="dialog">
     <p>¿Está seguro de querer actualizar este registro de forma permanente?</p>
     <button type="submit" id="button-cancelar" on:click={cerrarDialogo}>CANCELAR</button>
-    <button type="submit" id="button-actualizar" on:click={updateMedicamento}  class="update-btn" >ACTUALIZAR</button>  
+    <button type="submit" id="button-actualizar" on:click={updateMedicamento}>ACTUALIZAR</button>  
   </form>
 </dialog>
 </div>
@@ -210,15 +210,6 @@ async function updateMedicamento() {
     display: flex;
     flex-direction: column;
   }
-
-
-
-
-
-
-
-
-
 
 
 
