@@ -16,12 +16,21 @@ let password = '';
 const handleValidateAuthentication = async () => {
   try {
     const result = await sendValidateAdmin(username, password);
-    console.log('respuesta del server: datos correctos', result);    
-    dispatch('registrationSuccess');
+    
+    console.log("Respuesta del servidor:", result); // Verificar estructura
+
+    if (result.success && result.user) { 
+      localStorage.setItem("user", JSON.stringify(result.user)); // Guardar usuario autenticado
+      console.log("Usuario autenticado:", result.user); // Verificar que incluya nombre completo
+      dispatch("registrationSuccess");
+    } else {
+      console.error("Error en la autenticación:", result.message);
+    }
   } catch (error) {
-    console.log('error en handleValidateAuthentication', error);
+    console.error("Error en la autenticación:", error);
   }
 };
+
 
 
 

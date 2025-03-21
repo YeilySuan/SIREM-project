@@ -5,7 +5,19 @@
   
   let data = [];
   let barCode = "";
-  let error = null
+  let error = null;
+  let user = null;  // Guardar los datos del usuario logueado
+
+  // Verifica si hay sesión activa
+  onMount(() => {
+    const storedUser = localStorage.getItem("user");
+    if (!storedUser) {
+      goto("/"); // Redirige al login si no hay usuario autenticado
+    } else {
+      user = JSON.parse(storedUser);
+    }
+    getInventoryReport();
+  });
 
  // Función para leer el medicamento desde la base de datos
   async function getData() {
@@ -77,12 +89,14 @@ function cerrarDialogo(event){
     dialog.close();
 }
  
-function closeSesion(event) {
+ // Función para cerrar sesión
+ function closeSesion(event) {
     event.preventDefault();
-    goto('/')
-    cerrarDialogo();
+    localStorage.removeItem("user"); // Borra la sesión del usuario
+    goto('/');
   }
 
+  
 // Función para calcular la diferencia de fechas -MEDICAMENTOS PROXIMOS A VENCER-
 let inventoryReport = [];
 
@@ -130,11 +144,12 @@ function getRowColor(fechaVencimiento) {
           <h1>Sistema de Información Registro y Notificación de Vencimiento de Medicamentos - SIREM </h1>
       </div>
       <div class="header-right">
-          <p>Yeily Ortiz Angarita</p>
-          <button on:click={abrirDialogo} class="logout">Cerrar Sesión</button>
+        <p>{user?.nombre || "Usuario"}</p>
+        <button on:click={closeSesion} class="logout">Cerrar Sesión</button>
       </div>
-  </header>
+    </header>
 
+ 
   <!---- este es el boton de cerrar sesion y el modal para confirmar cerrar sesión -->
 <div class="show-modal">
   <dialog bind:this={dialog}>

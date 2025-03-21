@@ -97,50 +97,50 @@ app.post('/api/createMedicamentos', (req, res) => {
     });
 });
 
-app.post('/api/validateLogginToMainMenu', (req, res) => {
-    const { logginCedula, logginPassword } = req.body;
-    const validateUserAndPass = `SELECT * FROM usuarios WHERE Cedula = ?`;
-    
-    db.query(validateUserAndPass, [logginCedula], (err, results) => {
+//control z yeily
+
+
+app.post('/api/validateAdmin', (req, res) => {
+    const { username, password } = req.body;
+    const validateAdminQuery = `
+        SELECT u.Id_usuarios, u.Cedula, u.Nombre, u.Apellido, u.Contraseña, r.Tipo_rol
+        FROM roles r
+        JOIN usuarios u ON r.Id_usuarios = u.Id_usuarios
+        WHERE u.Cedula = ?`;
+
+    db.query(validateAdminQuery, [username], (err, result) => {
         if (err) {
-            console.log(err);
-            return res.status(500).json({ message: 'Error en el servidor' });
+            console.error('Error en la base de datos:', err);
+            return res.status(500).json({ success: false, message: 'Error en el servidor' });
         }
-        if (results.length === 0) {
-            return res.status(401).json({ message: 'Usuario no encontrado' });
+        
+        if (result.length === 0) {
+            return res.status(401).json({ success: false, message: 'Usuario no encontrado' });
         }
-        const user = results[0];
-        if (user.Contraseña === logginPassword) {
-            return res.status(200).json({ message: 'Autenticacion Exitosa' });
+
+        const user = result[0];
+
+        if (user.Contraseña === password) {
+            if (user.Tipo_rol === 'Administrativo') {
+                return res.status(200).json({
+                    success: true,
+                    message: 'Acceso concedido',
+                    user: {
+                        id: user.Id_usuarios,
+                        cedula: user.Cedula,
+                        nombreCompleto: `${user.Nombre} ${user.Apellido}`,
+                        tipoRol: user.Tipo_rol
+                    }
+                });
+            } else {
+                return res.status(403).json({ success: false, message: 'Acceso denegado' });
+            }
         } else {
-            return res.status(401).json({ message: 'Usuario o contraseña Incorrectas' });
+            return res.status(401).json({ success: false, message: 'Contraseña incorrecta' });
         }
     });
 });
 
-app.post('/api/validateAdmin', (req, res) => {
-    const { username, password } = req.body;
-    const validateAdminQuery = `SELECT u.*, r.Tipo_rol
-                                FROM roles r
-                                JOIN usuarios u ON r.Id_usuarios = u.Id_usuarios
-                                WHERE u.Cedula = ? `;
-    
-    db.query(validateAdminQuery, [username], (err, result) => {
-        if (err) return res.status(500).send('Error en la base de datos');
-        if (result.length === 0) return res.status(401).send('Usuario no encontrado');
-        
-        const user = result[0];
-        if (user.Contraseña === password) {
-            if (user.Tipo_rol === 'Administrativo') {                
-                return res.status(200).json({ message: 'Acceso concedido' });
-            } else {
-                return res.status(403).json({ message: 'Acceso denegado' });
-            }
-        } else {
-            return res.status(401).json({ message: 'Contraseña incorrecta' });
-        }
-    });
-});
 
 app.get('/api/getMedicineSearchButton', (req, res) => {
     const { barCode } = req.query;
