@@ -2,11 +2,26 @@
   import { goto } from "$app/navigation";
   import { onMount } from "svelte";
 
-  
+  let user = null;
   let data = [];
   let barCode = "";
   let error = null
 
+
+  //segundo cambio //
+  onMount(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      user = JSON.parse(storedUser);
+    }
+  });
+
+  function closeSesion(event) {
+    event.preventDefault();
+    localStorage.removeItem("user"); // Eliminar usuario al cerrar sesión
+    goto("/");
+  }
+  
  // Función para leer el medicamento desde la base de datos
   async function getData() {
     if (!barCode) return;
@@ -77,11 +92,6 @@ function cerrarDialogo(event){
     dialog.close();
 }
  
-function closeSesion(event) {
-    event.preventDefault();
-    goto('/')
-    cerrarDialogo();
-  }
 
 // Función para calcular la diferencia de fechas -MEDICAMENTOS PROXIMOS A VENCER-
 let inventoryReport = [];
@@ -125,14 +135,14 @@ function getRowColor(fechaVencimiento) {
 
 <div class="container">    
   <header>
-      <div class="header-left" >
-          <img src="/logo-sirem.png" alt="SIREM Logo" class="logo">
-          <h1>Sistema de Información Registro y Notificación de Vencimiento de Medicamentos - SIREM </h1>
-      </div>
-      <div class="header-right">
-          <p>Yeily Ortiz Angarita</p>
-          <button on:click={abrirDialogo} class="logout">Cerrar Sesión</button>
-      </div>
+    <div class="header-left">
+      <img src="/logo-sirem.png" alt="SIREM Logo" class="logo">
+      <h1>Sistema de Información Registro y Notificación de Vencimiento de Medicamentos - SIREM</h1>
+    </div>
+    <div class="header-right">
+      <p>{user ? user.nombreCompleto : "Usuario Desconocido"}</p>  
+      <button on:click={closeSesion} class="logout">Cerrar Sesión</button>
+    </div>
   </header>
 
   <!---- este es el boton de cerrar sesion y el modal para confirmar cerrar sesión -->
@@ -244,7 +254,7 @@ function getRowColor(fechaVencimiento) {
       </div>
   </div>
 
-
+/
 
 
 <style>

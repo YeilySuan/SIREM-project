@@ -12,17 +12,19 @@ const dispatch = createEventDispatcher();
 let username = '';
 let password = '';
   
-
+//FUNCION PARA GUARDAR EL NOMBRE DEL USUARIO QUE INGRESA * PRIMER CAMBIO
 const handleValidateAuthentication = async () => {
   try {
     const result = await sendValidateAdmin(username, password);
-    console.log('respuesta del server: datos correctos', result);    
-    dispatch('registrationSuccess');
+    
+    if (result.success) { 
+      localStorage.setItem("user", JSON.stringify(result.user)); // Guardar usuario autenticado
+      dispatch("registrationSuccess");
+    }
   } catch (error) {
-    console.log('error en handleValidateAuthentication', error);
+    console.log("Error en la autenticación", error);
   }
 };
-
 
 
 const unsubscribe = modalStore.subscribe(value => { 
